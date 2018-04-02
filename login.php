@@ -1,35 +1,50 @@
-<html>
-	<head>
-		<meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
-		<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<?php
+	require_once("support.php");
 
-	</head>
-        
-    <body>
-        
-    	<div id="tinypage"> <!--The id is for the small sign up box on the exmaple blog website-->
-    		<h1>Login</h1>
-    		<form action="register.html" method="post">
-    		<a>Username</a><br><input type="text" name="username"></input><br>
-    		<a>Password</a><br><input type="password" name="password"></input><br>
-    		<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Login</button></form>
+	if (isset($_POST["login"])) {
+		// $db = new DBConnection();
+		$username = $_POST["username"];
+    $password = $_POST["password"];
 
-    	</div>
-        
-        <div id="footer">
-        	<footer>
-  				<a href="http://www.yahoo.com">signup</a>
-  				<a href="http://www.yahoo.com">login</a>
-  				<a href="http://www.yahoo.com">about</a>
-			</footer>
-        </div>
+    // if (!$db->validLogin($username, $password)){
+    //   $errorMsg = "
+		// 		<div class=\"alert alert-warning\">
+		// 			Incorrect username or password.
+		// 		</div>";
+		// } else {
+		$_SESSION["username"] = $_POST["username"];
+		header("Location: index.php");
+	 	// }
+	}
 
-	
-	
-	</body>
+	$body = <<<EOBODY
+			<div class="container center-align" style="margin-bottom: 2em;">
+				<h3>Sign up</h3>
+		    <br>
+		    <form action="{$_SERVER[PHP_SELF]}" method="post">
+					<!-- Username -->
+					<div class="form-group row">
+						<label for="username" class="col-form-label col-sm-2"><strong>Username: </strong></label>
+						<input type="text" class="form-control col-sm-8" id="username" name="username" required>
+					</div>
 
-</html>
+		      <!-- Password -->
+		      <div class="form-group row">
+		        <label for="password" class="col-form-label col-sm-2"><strong>Password: </strong></label>
+		        <input type="password" class="form-control col-sm-8" id="password" name="password" required>
+		      </div>
+EOBODY;
+	$buttons = <<<BUTTONS
+	      <!-- Submit buttons -->
+	      <button class="btn btn-primary align-center" type="submit" name="login">Login</button>
+				<small> or </small>
+				<a href="signup.php">Sign Up</a>
+	    </form>
+	  </div>
+BUTTONS;
+
+	$body = $body.$errorMsg.$buttons;
+	$page = generatePage($body);
+	echo $page;
+
+ ?>
