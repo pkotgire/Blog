@@ -52,12 +52,17 @@
       public function getUserInfo($username) : array {
         $query = "SELECT * FROM users WHERE username = '$username'";
         $result = $this->runQuery($query);
+        $array = ($result->num_rows > 0) ? $result->fetch_assoc() : [];
+        $result->free();
+        return $array;
+      }
 
-        if ($result->num_rows > 0) {
-          return  $result->fetch_assoc();
-        } else {
-          return new Array();
-        }
+      public function userExists($username, $email) : bool {
+        $query = "SELECT username FROM users WHERE username = '$username' OR email = '$email'";
+        $result = $this->runQuery($query);
+        $exists = $result->num_rows > 0;
+        $result->free();
+        return $exists;
       }
 
       // Function to run a query, returns the result
