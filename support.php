@@ -1,4 +1,5 @@
 <?php
+require_once("dbconnection.php");
 
 function generatePage($body) {
     $page = <<<EOPAGE
@@ -8,7 +9,7 @@ function generatePage($body) {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="shortcut icon" type="image/png" href="img/.png"/>
+        <link rel="shortcut icon" type="image/png" href="">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
@@ -19,8 +20,8 @@ function generatePage($body) {
         <!-- Header -->
         <header>
           <div class="text-center header">
-            <h1>Blog</h1>
-            </div>
+            <h1><a href="index.php">Blog</a></h1>
+          </div>
         </header>
 
         $body
@@ -29,7 +30,7 @@ function generatePage($body) {
         <footer class="page-footer font-small blue pt-4 mt-4">
           <div class="footer-copyright py-3 text-center">
              © 2018 Copyright:
-             <a href="#"> Blog.com </a>
+             <a href="index.php"> Blog.com </a>
           </div>
         </footer>
       </body>

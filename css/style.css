@@ -1,0 +1,39 @@
+.container {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  min-height: 14rem;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.header {
+  background-color: #007bff;
+  border-bottom: 4px solid #007bbb;
+  color: white;
+  height: 7em;
+  position: sticky;
+}
+.header h1{
+  padding-top: .5em;
+  font-size: 36pt;
+}
+
+#or {
+  padding: 1em;
+}
+
+.center-align {
+  justify-content: center;
+  max-width: 700px;
+}
+
+h1 > a {
+  text-decoration: none;
+  color: inherit;
+}
+h1 > a:hover {
+  text-decoration: none;
+  color: inherit;
+}

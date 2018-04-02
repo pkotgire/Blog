@@ -1,25 +1,27 @@
 <?php
 	require_once("support.php");
+	session_start();
 
 	if (isset($_POST["login"])) {
-		// $db = new DBConnection();
+		$db = new DBConnection();
 		$username = $_POST["username"];
     $password = $_POST["password"];
 
-    // if (!$db->validLogin($username, $password)){
-    //   $errorMsg = "
-		// 		<div class=\"alert alert-warning\">
-		// 			Incorrect username or password.
-		// 		</div>";
-		// } else {
-		$_SESSION["username"] = $_POST["username"];
-		header("Location: index.php");
-	 	// }
+    if (!$db->validLogin($username, $password)){
+      $errorMsg = "
+				<div class=\"alert alert-warning\">
+					Incorrect username or password.
+				</div>";
+		} else {
+			$_SESSION["username"] = $username;
+			$_SESSION["loggedin"] = TRUE;
+			header("Location: index.php");
+	 	}
 	}
 
 	$body = <<<EOBODY
-			<div class="container center-align" style="margin-bottom: 2em;">
-				<h3>Sign up</h3>
+			<div class="container center-align">
+				<h3>Login</h3>
 		    <br>
 		    <form action="{$_SERVER[PHP_SELF]}" method="post">
 					<!-- Username -->
@@ -34,11 +36,16 @@
 		        <input type="password" class="form-control col-sm-8" id="password" name="password" required>
 		      </div>
 EOBODY;
+
+	/** Error Message will appear here **/
+
 	$buttons = <<<BUTTONS
 	      <!-- Submit buttons -->
-	      <button class="btn btn-primary align-center" type="submit" name="login">Login</button>
-				<small> or </small>
-				<a href="signup.php">Sign Up</a>
+				<div class="float-right" style="padding-right:7em;">
+		      <button class="btn btn-primary" type="submit" name="login">Login</button>
+					<span id="or"><small> or </small></span>
+					<a href="signup.php">Sign Up</a>
+				</div>
 	    </form>
 	  </div>
 BUTTONS;
