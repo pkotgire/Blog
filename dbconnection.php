@@ -1,5 +1,5 @@
 <?php
-
+    // declare(strict_types=1);
     class DBConnection {
 
       private $servername = "localhost";
@@ -12,7 +12,7 @@
       }
 
       // Creates the 'users' table in the blog db if it does not exist
-      private function createUsersTable() {
+      private function createUsersTable() : void {
         $query = "CREATE TABLE users (username varchar(16) NOT NULL, email
           varchar(100) NOT NULL, password varchar(255) NOT NULL, firstname
           varchar(32) NOT NULL, lastname varchar(32) NOT NULL, birthday
@@ -24,7 +24,7 @@
 
       // Function to register a user into the 'users' databse
       // Returns a boolean based on success
-      public function register($email, $username, $password) {
+      public function register($email, $username, $password) : bool {
         $password = password_hash($password, PASSWORD_DEFAULT);
         $query = "INSERT INTO users (email, username, password)
           VALUES ('$email', '$username', '$password')";
@@ -33,7 +33,7 @@
 
       // Function to check if login is valid
       // Returns a boolean based on success
-      public function login($username, $password) {
+      public function validLogin($username, $password) : bool {
         $query = "SELECT username, password FROM users WHERE username = '$username'";
         $result = $this->runQuery($query);
 
@@ -44,7 +44,20 @@
           }
         }
 
+        $result->free();
         return FALSE;
+      }
+
+      // Returns an array with user info
+      public function getUserInfo($username) : array {
+        $query = "SELECT * FROM users WHERE username = '$username'";
+        $result = $this->runQuery($query);
+
+        if ($result->num_rows > 0) {
+          return  $result->fetch_assoc();
+        } else {
+          return new Array();
+        }
       }
 
       // Function to run a query, returns the result
