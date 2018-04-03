@@ -65,6 +65,21 @@
         return $exists;
       }
 
+      public function updateUserInfo($username, $array) : bool {
+        $query = "UPDATE users SET ";
+        foreach ($array as $key=>$value) {
+          $query .= "$key=";
+          if (is_string($value))
+            $query .= "'$value'";
+          else
+            $query .= $value;
+          $query .= ", ";
+        }
+        $query = rtrim($query, ", ");
+        $query .= " WHERE username = '$username';";
+        return $this->runQuery($query);
+      }
+
       // Function to run a query, returns the result
       private function runQuery($query) {
         $conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
@@ -74,7 +89,7 @@
         }
 
         $result = $conn->query($query);
-
+        // echo $conn->error
         $conn->close();
 
         return $result;
