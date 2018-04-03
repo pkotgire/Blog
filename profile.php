@@ -12,7 +12,6 @@
   // fetch user info from database
   $username = $_SESSION["username"];
   $user = $db->getUserInfo($username);
-  $
 
 
   $body = <<<EOBODY

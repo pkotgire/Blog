@@ -2,6 +2,7 @@
 	require_once("support.php");
 	session_start();
 
+	$errorMsg = "";
 	// if the user has clicked signup
 	if(isset($_POST["signup"])) {
 		// connect to the database
@@ -34,15 +35,14 @@
 				</div>";
 		} else {
 			// add new user into the database
-			// echo $db->register($email, $username, $password);
-			echo "HeRE";
+			$db->register($email, $username, $password);
 
 			// store username in SESSION
 			$_SESSION["username"] = $username;
 			$_SESSION["loggedin"] = TRUE;
 
 			// redirect user to home page
-			// header("Location: index.php");
+			header("Location: index.php");
 		}
 	}
 
@@ -51,7 +51,7 @@
 			<div class="container center-align">
 				<h3>Sign up</h3>
 		    <br>
-		    <form action="{$_SERVER[PHP_SELF]}" method="post">
+		    <form action="{$_SERVER['PHP_SELF']}" method="post">
 					<!-- Username -->
 					<div class="form-group row">
 						<label for="username" class="col-form-label col-sm-2"><strong>Username: </strong></label>

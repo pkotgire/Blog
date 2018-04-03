@@ -2,6 +2,8 @@
 	require_once("support.php");
 	session_start();
 
+	$errorMsg = "";
+
 	if (isset($_POST["login"])) {
 		$db = new DBConnection();
 		$username = $_POST["username"];
@@ -23,7 +25,7 @@
 			<div class="container center-align">
 				<h3>Login</h3>
 		    <br>
-		    <form action="{$_SERVER[PHP_SELF]}" method="post">
+		    <form action="{$_SERVER['PHP_SELF']}" method="post">
 					<!-- Username -->
 					<div class="form-group row">
 						<label for="username" class="col-form-label col-sm-2"><strong>Username: </strong></label>
