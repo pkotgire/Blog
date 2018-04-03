@@ -14,9 +14,9 @@
       // Creates the 'users' table in the blog db if it does not exist
       private function createUsersTable() : void {
         $query = "CREATE TABLE users (username varchar(16) NOT NULL, email
-          varchar(100) NOT NULL, password varchar(255) NOT NULL, firstname
-          varchar(32) NOT NULL, lastname varchar(32) NOT NULL, birthday
-          date, website varchar(255) NOT NULL,
+          varchar(100), password varchar(255) NOT NULL, firstname
+          varchar(32), lastname varchar(32), birthday
+          date, website varchar(255),
           PRIMARY KEY (username));";
 
           $this->runQuery($query);
