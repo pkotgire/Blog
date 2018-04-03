@@ -64,24 +64,24 @@
 		    <form action="{$_SERVER['PHP_SELF']}" method="post">
 					<!-- Username -->
 					<div class="form-group row">
-						<label for="username" class="col-form-label col-sm-2"><strong>Username: </strong></label>
+						<label for="username" class="col-form-label col-sm-3"><strong>Username: </strong></label>
 						<input type="text" class="form-control col-sm-8" id="username" name="username" pattern="[^\s]+" value="$username" required>
 					</div>
 
 					<!-- Email -->
 					<div class="form-group row">
-						<label for="email" class="col-form-label col-sm-2"><strong>Email: </strong></label>
+						<label for="email" class="col-form-label col-sm-3"><strong>Email: </strong></label>
 						<input type="email" class="form-control col-sm-8" id="email" name="email" value="$email" required>
 					</div>
 
 		      <!-- Password -->
 		      <div class="form-group row">
-		        <label for="password" class="col-form-label col-sm-2"><strong>Password: </strong></label>
+		        <label for="password" class="col-form-label col-sm-3"><strong>Password: </strong></label>
 		        <input type="password" class="form-control col-sm-8" id="password" name="password" value="$password" required>
 		      </div>
 
 		      <div class="form-group row">
-		        <label for="verifypass" class="col-form-label col-sm-2"><strong>Verify Password: </strong></label>
+		        <label for="verifypass" class="col-form-label col-sm-3"><strong>Verify Password: </strong></label>
 		        <input type="password" class="form-control col-sm-8" id="verifypass" name="verifypass" required>
 		      </div>
 FORM;

@@ -19,7 +19,7 @@ function generatePage($body) {
       <body>
         <!-- Header -->
         <header>
-          <div class="text-center header">
+          <div class="text-center header sticky-top">
             <h1><a href="index.php">Blog</a></h1>
           </div>
         </header>
@@ -37,6 +37,10 @@ function generatePage($body) {
     </html>
 EOPAGE;
   return $page;
+}
+
+function phpAlert($msg) {
+    echo '<script type="text/javascript">alert("'.$msg.'")</script>';
 }
 
 ?>
