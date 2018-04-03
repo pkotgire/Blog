@@ -3,6 +3,10 @@
 	session_start();
 
 	$errorMsg = "";
+	$email = "";
+	$username = "";
+	$password = "";
+
 	// if the user has clicked signup
 	if(isset($_POST["signup"])) {
 		// connect to the database
