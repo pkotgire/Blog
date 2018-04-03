@@ -12,6 +12,11 @@
   // fetch user info from database
   $username = $_SESSION["username"];
   $user = $db->getUserInfo($username);
+  $email = $user["email"];
+  $fname = $user["firstname"];
+  $lname = $user["lastname"];
+  $bday = $user["birthday"];
+  $website = $user["website"];
 
 
   $body = <<<EOBODY
@@ -20,9 +25,9 @@
         <tbody>
           <tr><td><strong>Username: </strong></td><td>$username</td></tr>
           <tr><td><strong>Email: </strong></td><td>$email</td></tr>
-          <tr><td><strong>First Name: </strong></td><td>$firstname</td></tr>
-          <tr><td><strong>Last Name: </strong></td><td>$lastname</td></tr>
-          <tr><td><strong>Birthday: </strong></td><td>$birthday</td></tr>
+          <tr><td><strong>First Name: </strong></td><td>$fname</td></tr>
+          <tr><td><strong>Last Name: </strong></td><td>$lname</td></tr>
+          <tr><td><strong>Birthday: </strong></td><td>$bday</td></tr>
           <tr><td><strong>Website: </strong></td><td>$website</td></tr>
         </tbody>
       </table>
