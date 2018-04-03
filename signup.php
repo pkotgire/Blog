@@ -35,14 +35,20 @@
 				</div>";
 		} else {
 			// add new user into the database
-			$db->register($email, $username, $password);
+			if ($db->register($email, $username, $password)){
+				// if succesful registration
+				// store username in SESSION
+				$_SESSION["username"] = $username;
+				$_SESSION["loggedin"] = TRUE;
 
-			// store username in SESSION
-			$_SESSION["username"] = $username;
-			$_SESSION["loggedin"] = TRUE;
-
-			// redirect user to home page
-			header("Location: index.php");
+				// redirect user to home page
+				header("Location: index.php");
+			} else {
+				$errorMsg = "
+					<div class=\"alert alert-danger\">
+						Registration failed.
+					</div>";
+			}
 		}
 	}
 
@@ -55,19 +61,19 @@
 					<!-- Username -->
 					<div class="form-group row">
 						<label for="username" class="col-form-label col-sm-2"><strong>Username: </strong></label>
-						<input type="text" class="form-control col-sm-8" id="username" name="username" pattern="[^\s]+" required>
+						<input type="text" class="form-control col-sm-8" id="username" name="username" pattern="[^\s]+" value="$username" required>
 					</div>
 
 					<!-- Email -->
 					<div class="form-group row">
 						<label for="email" class="col-form-label col-sm-2"><strong>Email: </strong></label>
-						<input type="email" class="form-control col-sm-8" id="email" name="email" required>
+						<input type="email" class="form-control col-sm-8" id="email" name="email" value="$email" required>
 					</div>
 
 		      <!-- Password -->
 		      <div class="form-group row">
 		        <label for="password" class="col-form-label col-sm-2"><strong>Password: </strong></label>
-		        <input type="password" class="form-control col-sm-8" id="password" name="password" required>
+		        <input type="password" class="form-control col-sm-8" id="password" name="password" value="$password" required>
 		      </div>
 
 		      <div class="form-group row">
