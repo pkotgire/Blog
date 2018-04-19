@@ -27,6 +27,8 @@ nav > a {
 .center-align {
   justify-content: center;
   max-width: 750px;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 h1 > a {

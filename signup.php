@@ -90,7 +90,7 @@ FORM;
 
 	$buttons = <<<BUTTONS
 	      <!-- Submit buttons -->
-				<div class="float-right" style="padding-right:7em;">
+				<div class="float-right" style="padding-right:3em;">
 		      <button class="btn btn-primary align-center" type="submit" name="signup">Sign Up</button>
 					<span id="or"><small> or </small></span>
 					<a href="login.php">Login</a>
