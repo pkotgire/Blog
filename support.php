@@ -1,7 +1,40 @@
 <?php
 require_once("dbconnection.php");
 
-function generatePage($body) {
+function generatePage($body, $navbar="", $currentPage="") {
+    $title = "WonderBlog";
+
+    $home = "";
+    $profile = "";
+    $postBlog = "";
+    if ($currentPage == "home") {
+      $home = "active";
+    } else if ($currentPage == "profile") {
+      $profile = "active";
+    } else if ($currentPage == "postBlog") {
+      $postBlog = "active";
+    }
+
+
+    if ($navbar == "") {
+      $navbar = <<< NAV
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="index.php">$title</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link $home" href="index.php">Home</a></li>
+            <li class="nav-item"><a class="nav-link $profile" href="profile.php">My Profile</a></li>
+            <li class="nav-item"><a class="nav-link $postBlog" href="postBlog.php">Post Blog</a></li>
+            <li class="nav-item"><a class="nav-link" href="logout.php">Log Out</a></li>
+          </ul>
+        </div>
+      </nav>
+NAV;
+    }
+
     $page = <<<EOPAGE
     <!doctype html>
     <html>
@@ -14,13 +47,14 @@ function generatePage($body) {
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
 
-        <title>Blog | CMSC389N</title>
+        <title>$title | CMSC389N</title>
       </head>
       <body>
         <!-- Header -->
         <header>
-          <div class="text-center header sticky-top">
-            <h1><a href="index.php">Blog</a></h1>
+          <div class="text-center header">
+            <!-- Navbar -->
+            $navbar
           </div>
         </header>
 
@@ -30,7 +64,7 @@ function generatePage($body) {
         <footer class="page-footer font-small blue pt-4 mt-4">
           <div class="footer-copyright py-3 text-center">
              © 2018 Copyright:
-             <a href="index.php"> Blog.com </a>
+             <a href="index.php"> $title.com </a>
           </div>
         </footer>
       </body>

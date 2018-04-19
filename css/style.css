@@ -1,6 +1,6 @@
 .container {
   margin-top: 2em;
-  margin-bottom: 2em;
+  margin-bottom: 4em;
   min-height: 14rem;
 }
 
@@ -10,14 +10,12 @@
 
 .header {
   background-color: #007bff;
-  border-bottom: 4px solid #007bbb;
+  border-bottom: 4px solid #1151fb;
   color: white;
-  height: 7em;
-  position: sticky;
+  padding-left: 3em;
 }
-.header h1{
-  padding-top: .5em;
-  font-size: 36pt;
+nav {
+  padding-left: 5em;
 }
 
 #or {
@@ -36,4 +34,15 @@ h1 > a {
 h1 > a:hover {
   text-decoration: none;
   color: inherit;
+}
+
+.blog {
+  border: 2px solid rgba(0,0,0,0.25);
+  border-radius: .5em;
+  padding: 1em;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+.blog > small {
+ float:right;
 }

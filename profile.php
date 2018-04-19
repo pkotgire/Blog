@@ -99,7 +99,7 @@
         </div>
 
         <!-- Submit buttons -->
-        <div class="float-right" style="padding-right:7em;">
+        <div class="float-right" style="padding-right:3em;">
           <button class="btn btn-primary align-center" type="submit" name="update">Update Profile</button>
           <button class="btn btn-primary align-center" type="submit" name="cancel">Cancel</button>
         </div>
@@ -125,15 +125,13 @@ FORM;
           <form action="{$_SERVER['PHP_SELF']}" method="post">
             <a class="btn btn-primary" href="index.php">Go Back</a>
             <button class="btn btn-primary align-center" type="submit" name="edit">Edit Profile</button>
-            <a class="btn btn-primary" href="logout.php">Log Out</a>
           </form>
         </div>
       </div>
 EOBODY;
   }
 
-
-  $page = generatePage($body);
+  $page = generatePage($body, "", "profile");
   echo $page;
 
  ?>
