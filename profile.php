@@ -111,7 +111,7 @@ FORM;
   } else {
     $body = <<<EOBODY
       <div class="container center-align">
-        <table class="table table-bordered">
+        <table class="table table-hover">
           <tbody>
             <tr><td><strong>Username: </strong></td><td>$username</td></tr>
             <tr><td><strong>Email: </strong></td><td>$email</td></tr>

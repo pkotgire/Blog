@@ -15,16 +15,17 @@ function generatePage($body, $navbar="", $currentPage="") {
       $postBlog = "active";
     }
 
-
     if ($navbar == "") {
       $navbar = <<< NAV
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-fixed-top">
         <a class="navbar-brand" href="index.php">$title</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+         aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
+          <ul class="navbar-nav ml-auto">
             <li class="nav-item"><a class="nav-link $home" href="index.php">Home</a></li>
             <li class="nav-item"><a class="nav-link $profile" href="profile.php">My Profile</a></li>
             <li class="nav-item"><a class="nav-link $postBlog" href="postBlog.php">Post Blog</a></li>
@@ -42,7 +43,7 @@ NAV;
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="shortcut icon" type="image/png" href="">
+        <link rel="shortcut icon" type="image/png" href="img/wbfavicon2.png">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">

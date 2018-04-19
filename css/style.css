@@ -12,10 +12,12 @@
   background-color: #007bff;
   border-bottom: 4px solid #1151fb;
   color: white;
-  padding-left: 3em;
 }
 nav {
-  padding-left: 5em;
+  padding: .5em 4em !important;
+}
+nav > a {
+  font-size: 1.7em !important;
 }
 
 #or {
@@ -41,8 +43,10 @@ h1 > a:hover {
   border-radius: .5em;
   padding: 1em;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
 }
 .blog > small {
  float:right;
+}
+table {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.15), 0 3px 10px 0 rgba(0, 0, 0, 0.1);
 }

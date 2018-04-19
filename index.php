@@ -27,11 +27,11 @@
   // display user homepage with blog posts
   $body = <<<EOBODY
     <div class="container center-align">
-      <h3>Welcome to your Blog, $name</h3>
+      <h3>Welcome to your Blog, &nbsp<em>$name</em></h3>
       <hr>
-      <h6><a href="profile.php">Please update your Profile</a> or
-      <a href="postBlog.php">Post something new!</a></h6>
-      <br>
+      <h6>Please <a href="profile.php">Update your Profile</a> or
+      <a href="postBlog.php">Post something New!</a></h6>
+
       <!-- display blogs -->
       $allBlogs
     </div>
