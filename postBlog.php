@@ -1,6 +1,7 @@
 <?php
   require_once("support.php");
   session_start();
+  date_default_timezone_set('EST');
 
   // check if user has logged in
   if(!$_SESSION["loggedin"]) {
@@ -8,16 +9,20 @@
   }
   $username = $_SESSION['username'];
 
-
+  // if the user posts a new blog
   if (isset($_POST['postBlog'])) {
+    // get the blog data, tags, and current time
     $blog = $_POST['newBlog'];
     $tags = processTags(trim($_POST['tags']));
-    $time = date("h:ia m/d/Y");
-    $myarray = [];
-    array_push($myarray, processBlog($blog,$tags,$time, $username));
-    $_SESSION['blog'] = $myarray;
-    // $_SESSION['blog'] = processBlog($blog,$tags,$time, $username);
+    $time = date("h:iA m/d/Y");
 
+    /* replace with database connection */
+    // add the new blog to the list of other blogs
+    $blogs = (empty($_SESSION['blog'])) ? [] : $_SESSION['blog'];
+    array_unshift($blogs, processBlog($blog,$tags,$time, $username));
+    $_SESSION['blog'] = $blogs;
+
+    // go back to the homepage
     header("Location: index.php");
   }
 
@@ -61,7 +66,7 @@ EOBODY;
                   <br>
                   $tags
                   <br>
-                  <small><em>  Created By: $username at $time</em></small>
+                  <small><em> Posted by: <strong>$username</strong> at $time</em></small>
                 </div>";
     return $newBlog;
   }

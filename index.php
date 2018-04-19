@@ -6,39 +6,34 @@
   if(!$_SESSION["loggedin"]) {
     header("Location: login.php");
   }
+
+  // connect to database and get info on user
   $db = new DBConnection();
   $username = $_SESSION["username"];
   $user = $db->getUserInfo($username);
   $name = $user["firstname"]." ".$user["lastname"];
   if($name == " ") { $name = $username; }
 
-  $blog = $_SESSION['blog'];
-  // $timestamp = $_SESSION['time'];
-  // $tagList = $_SESSION['tags'];
-  // $blogList = "";
-  // $tags = "";
-  // $blogs = "";
-  //
-  // if (!empty($tagList)) {
-  //   foreach ($tagList as $tag) {
-  //     $tags .= "<span class=\"badge badge-pill badge-primary\">$tag</span> ";
-  //   }
-  // }
-  // <div class="container center-align blog">
-  //   $blog1
-  //   <br>
-  //   $tags
-  //   <br>
-  //   <small><em>  Created By: $username at $timestamp</em></small>
-  // </div>
+  /* replace with database access to blogs */
+  // add all blogs to a list for display
+  $blogsList = $_SESSION['blog'];
+  $allBlogs = "";
+  if(!empty($blogsList)) {
+    foreach ($blogsList as $blog) {
+      $allBlogs .= $blog;
+    }
+  }
 
+  // display user homepage with blog posts
   $body = <<<EOBODY
     <div class="container center-align">
       <h3>Welcome to your Blog, $name</h3>
       <hr>
-      <h6>Please update your Profile</h6>
+      <h6><a href="profile.php">Please update your Profile</a> or
+      <a href="postBlog.php">Post something new!</a></h6>
       <br>
-      $blog
+      <!-- display blogs -->
+      $allBlogs
     </div>
 EOBODY;
    $page = generatePage($body, "", "home");
