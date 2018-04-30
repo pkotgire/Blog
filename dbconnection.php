@@ -168,7 +168,7 @@
         return $result;
       }
 
-      private function updateAvatar($guid, $bytes) : bool {
+      public function updateAvatar($guid, $bytes) : bool {
         $query = "UPDATE users SET avatar = $bytes WHERE guid = '$guid'";
         return $this->runQuery($query);
       }
