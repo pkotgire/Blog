@@ -54,6 +54,9 @@
       public function register($email, $username, $password) : bool {
         $password = password_hash($password, PASSWORD_DEFAULT);
         $GUID = $this->generate_guid();
+        if ($this->userExists($username, $email)) {
+          return FALSE;
+        }
         $query = "INSERT INTO users (GUID, username, email, password)
           VALUES ('$GUID', '$username', '$email', '$password')";
         return $this->runQuery($query);
