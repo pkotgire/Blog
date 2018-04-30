@@ -85,6 +85,8 @@
         return $array;
       }
 
+      // Function that takes a username and email and checks if the user exists, only one of the parameters
+      // have to be passed in
       public function userExists($username, $email) : bool {
         $query = "SELECT username FROM users WHERE username = '$username' OR email = '$email'";
         $result = $this->runQuery($query);
@@ -93,7 +95,8 @@
         return $exists;
       }
 
-      public function updateUserInfo($username, $array) : bool {
+      // Function that takes a user's GUID and an array and update the users table
+      public function updateUserInfo($GUID, $array) : bool {
         $query = "UPDATE users SET ";
         foreach ($array as $key=>$value) {
           $query .= "$key=";
@@ -104,7 +107,7 @@
           $query .= ", ";
         }
         $query = rtrim($query, ", ");
-        $query .= " WHERE username = '$username';";
+        $query .= " WHERE GUID = '$GUID';";
         return $this->runQuery($query);
       }
 
