@@ -53,7 +53,7 @@
       // Returns a boolean based on success
       public function register($email, $username, $password) : bool {
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $GUID = generate_guid();
+        $GUID = $this->generate_guid();
         $query = "INSERT INTO users (GUID, username, email, password)
           VALUES ('$GUID', '$username', '$email', '$password')";
         return $this->runQuery($query);
