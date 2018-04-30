@@ -43,6 +43,12 @@
   $bday = $user["birthday"];
   $website = $user["website"];
 
+  // get following users from database
+  // $followingUsers = $user["following"];
+  $followingUsers = implode(", ",['<a href="index.php">tom</a>', 'bill', 'ted','tom', 'bill', 'ted','tom',
+   'bill', 'ted','tom', 'bill', 'ted','tom', 'bill', 'ted','tom', 'bill', 'ted',
+  'tom', 'bill', 'ted', 'tom', 'bill', 'ted','tom', 'bill', 'ted','tom', 'bill', 'ted' ]);
+
   // create form for user to upadte info
   if (isset($_POST["edit"])){
     $body = <<<FORM
@@ -52,6 +58,11 @@
         <div class="form-group row">
           <label for="username" class="col-form-label col-sm-3"><strong>Username: </strong></label>
           <input type="text" class="form-control col-sm-8" id="username" name="username" pattern="[^\s]+" value="$username" disabled>
+        </div>
+
+        <!-- Avatar -->
+        <div class="form-group row">
+          <!-- ADD PROFILE PIC STUFF HERE -->
         </div>
 
         <!-- Email -->
@@ -114,11 +125,13 @@ FORM;
         <table class="table table-hover">
           <tbody>
             <tr><td><strong>Username: </strong></td><td>$username</td></tr>
+            <!-- ADD PROFILE PIC STUFF HERE -->
             <tr><td><strong>Email: </strong></td><td>$email</td></tr>
-            <tr><td><strong>First Name: </strong></td><td>$fname</td></tr>
-            <tr><td><strong>Last Name: </strong></td><td>$lname</td></tr>
+            <tr><td><strong>Name: </strong></td><td>$fname $lname</td></tr>
             <tr><td><strong>Birthday: </strong></td><td>$bday</td></tr>
             <tr><td><strong>Website: </strong></td><td>$website</td></tr>
+            <tr><td><strong>Following: </strong></td><td>$followingUsers</td></tr>
+
           </tbody>
         </table>
         <div class="float-right style="padding-right:7em;">
@@ -127,6 +140,20 @@ FORM;
             <button class="btn btn-primary align-center" type="submit" name="edit">Edit Profile</button>
           </form>
         </div>
+      </div>
+EOBODY;
+      // replace with database info
+      $blogsList = $_SESSION['blog'];
+      $allBlogs = "";
+      if(!empty($blogsList)) {
+        foreach ($blogsList as $blog) {
+          $allBlogs .= $blog;
+        }
+      }
+      $body .= <<< EOBODY
+      <div class="container center-align">
+        <h3>Posts</h3>
+        $allBlogs
       </div>
 EOBODY;
   }
