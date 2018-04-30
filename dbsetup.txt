@@ -2,7 +2,7 @@ create database blogdb;
 
 create table users(guid char(32) primary key not null, username varchar(16) not null, email varchar(128) not null, password varchar(255) not null, firstName varchar(32), lastName varchar(32), website varchar(128), avatar longblob);
 
-create table userHasBlogs(bguid char(32) not null, uguid char(32) not null, primary key(bguid,uguid), foreign key (uguid) references users (guid), foreign key (bguid) references blogs (guid));
+create table userHasBlogs(bguid char(32) primary key not null, uguid char(32) not null, foreign key (uguid) references users (guid), foreign key (bguid) references blogs (guid));
 
 create table blogs(guid char(32) primary key not null, text varchar(1024), timestamp datetime);
 

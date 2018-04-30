@@ -9,10 +9,30 @@
 
       public function __construct() {
         $this->createUsersTable();
+        $this->createUserHasBlogsTable();
       }
 
       // Creates the 'users' table in the blog db if it does not exist
       private function createUsersTable() : void {
+        $query = "create table users(guid char(32) primary key not null,
+          username varchar(16) not null, email varchar(128) not null,
+          password varchar(255) not null, firstName varchar(32), lastName
+          varchar(32), website varchar(128), avatar longblob);";
+
+        $this->runQuery($query);
+      }
+
+      // Creates the 'userHasBlogs' table
+      private function createUserHasBlogsTable() : void {
+        $query = "create table userHasBlogs(bguid char(32) primary key not
+          null, uguid char(32) not null, foreign key (uguid) references users
+          (guid), foreign key (bguid) references blogs (guid));";
+
+        $this->runQuery($query);
+      }
+
+      // Old function
+      private function createUsersTableOld() : void {
         $query = "CREATE TABLE users (username varchar(16) NOT NULL, email
           varchar(100), password varchar(255) NOT NULL, firstname
           varchar(32), lastname varchar(32), birthday
