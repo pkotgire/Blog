@@ -114,6 +114,25 @@
         return $this->runQuery($query);
       }
 
+      // Function to create a blog post
+      public function createBlog($GUID, $text, $tags) {
+
+        // Generate blog guid and insert into blog table
+        $bGUID = $this->generate_guid();
+        $query = "INSERT INTO blogs (GUID, text) VALUES ($bGUID, $text);";
+        $this->runQuery($query);
+
+        // Link the blog to the given user
+        $query = "INSERT INTO userhasblogs (bguid, uguid) VALUES ($bGUID, $GUID);";
+        $this->runQuery($query);
+
+        // Link tags to blog
+        foreach($tags as $tag) {
+          $query = "INSERT INTO tags (name, bguid) VALUES ($tag, $bGUID)";
+          $this->runQuery($query);
+        }
+      }
+
       // Function to run a query, returns the result
       private function runQuery($query) {
         $conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
