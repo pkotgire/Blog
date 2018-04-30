@@ -11,7 +11,7 @@
   $db = new DBConnection();
   $username = $_SESSION["username"];
   $user = $db->getUserInfo($username);
-  $name = $user["firstname"]." ".$user["lastname"];
+  $name = $user["firstName"]." ".$user["lastName"];
   if($name == " ") { $name = $username; }
 
   // add all blogs to a list for display
@@ -24,7 +24,7 @@
     }
   }
   if ($allBlogs == "") {
-    $allBlogs = "<div class=\"alert alert-warning\">
+    $allBlogs = "<br><div class=\"alert alert-warning\">
                    Looks like there's nothing here....
                    Try searching for some tags or blogs to follow
                    or post your own blog.

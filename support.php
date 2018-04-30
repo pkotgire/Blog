@@ -22,7 +22,7 @@ function generatePage($body, $navbar="", $currentPage="") {
 NAV;
       if ($currentPage == "home") {
         $navbar .= <<< NAV
-          <form class="form-inline" action={$_SERVER['PHP_SELF']} method="get">
+          <form class="form-inline" action="searchResults.php" method="get">
             <input class="form-control mr-sm-2" type="search" placeholder="blogs" name="q">
             <button class="btn btn-outline-light" type="submit">Search</button>
           </form>

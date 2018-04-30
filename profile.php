@@ -44,9 +44,7 @@
 
   // get following users from database
   // $followingUsers = $user["following"];
-  $followingUsers = implode(", ",['<a href="index.php">tom</a>', 'bill', 'ted','tom', 'bill', 'ted','tom',
-   'bill', 'ted','tom', 'bill', 'ted','tom', 'bill', 'ted','tom', 'bill', 'ted',
-  'tom', 'bill', 'ted', 'tom', 'bill', 'ted','tom', 'bill', 'ted','tom', 'bill', 'ted' ]);
+  $followingUsers = implode(", ",['<a href="index.php">tom</a>', 'bill', 'ted','tom']);
 
   // create form for user to upadte info
   if (isset($_POST["edit"])){
@@ -142,7 +140,7 @@ EOBODY;
         }
       }
       if ($allBlogs == "") {
-        $allBlogs = "<div class=\"alert alert-warning\">
+        $allBlogs = "<br><div class=\"alert alert-warning\">
                        Looks like there's nothing here....
                      </div>";
       }
