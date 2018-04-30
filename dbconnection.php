@@ -10,6 +10,8 @@
       public function __construct() {
         $this->createUsersTable();
         $this->createUserHasBlogsTable();
+        $this->createBlogsTable();
+        $this->createTagsTable();
       }
 
       // Creates the 'users' table in the blog db if it does not exist
@@ -31,23 +33,29 @@
         $this->runQuery($query);
       }
 
-      // Old function
-      private function createUsersTableOld() : void {
-        $query = "CREATE TABLE users (username varchar(16) NOT NULL, email
-          varchar(100), password varchar(255) NOT NULL, firstname
-          varchar(32), lastname varchar(32), birthday
-          date, website varchar(255),
-          PRIMARY KEY (username));";
+      private function createBlogsTable() : void {
+        $query = "create table blogs(guid char(32) primary key not null, text
+          varchar(1024), timestamp datetime not null default now());";
 
-          $this->runQuery($query);
+        $this->runQuery($query);
       }
+
+      private function createTagsTable() : void {
+        $query = "create table tags(name varchar(32) not null, bguid char(32)
+          not null, primary key(name,bguid), foreign key (bguid) references
+          blogs (guid));";
+
+        $this->runQuery($query);
+      }
+
 
       // Function to register a user into the 'users' databse
       // Returns a boolean based on success
       public function register($email, $username, $password) : bool {
         $password = password_hash($password, PASSWORD_DEFAULT);
-        $query = "INSERT INTO users (email, username, password)
-          VALUES ('$email', '$username', '$password')";
+        $GUID = generate_guid();
+        $query = "INSERT INTO users (GUID, username, email, password)
+          VALUES ('$GUID', '$username', '$email', '$password')";
         return $this->runQuery($query);
       }
 
@@ -113,6 +121,22 @@
         $conn->close();
 
         return $result;
+      }
+
+      private function generate_guid() : String {
+          if (function_exists('com_create_guid')) {
+              return com_create_guid();
+          } else {
+              mt_srand((double)microtime()*10000);
+              $charid = strtoupper(md5(uniqid(rand(), true)));
+              $hyphen = chr(45); // "-"
+              $uuid = substr($charid, 0, 8).$hyphen
+                  .substr($charid, 8, 4).$hyphen
+                  .substr($charid,12, 4).$hyphen
+                  .substr($charid,16, 4).$hyphen
+                  .substr($charid,20,12);
+              return $uuid;
+          }
       }
     }
 ?>
