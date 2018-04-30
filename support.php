@@ -43,11 +43,17 @@ NAV;
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+        <!-- css -->
         <link rel="shortcut icon" type="image/png" href="img/wbfavicon2.png">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
 
+        <!-- javascript -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
         <title>$title | CMSC389N</title>
       </head>
       <body>
@@ -68,6 +74,8 @@ NAV;
              <a href="index.php"> $title.com </a>
           </div>
         </footer>
+
+
       </body>
     </html>
 EOPAGE;

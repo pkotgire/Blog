@@ -48,9 +48,11 @@ EOBODY;
 		      <button class="btn btn-primary" type="submit" name="login">Login</button>
 					<span id="or"><small> or </small></span>
 					<a href="signup.php">Sign Up</a>
-					<br>
-					<a href="forgotPassword.php">&nbsp<small>Forgot your Password?</small></a>
 				</div>
+				<br><br>
+				<a class="float-right" style="padding-right:7em;" href="forgotPassword.php">
+					<small>Forgot your Password?</small>
+				</a>
 	    </form>
 	  </div>
 BUTTONS;

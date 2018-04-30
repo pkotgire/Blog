@@ -4,7 +4,7 @@
   $body = <<< EOBODY
   <div class="container center-align mx-auto" style="margin-top: 6em !important; text-align:center;">
     <h1>HA! Get <strong>REKT</strong> BOII!!!!!!!</h1>
-    <h2>Shoulda remembered your password, <strong><em>dumbass...</em></strong></h2>
+    <h2>Shoulda remembered your password, <strong><em>dummy...</em></strong></h2>
   </div>
 EOBODY;
 $navbar = <<< NAV
