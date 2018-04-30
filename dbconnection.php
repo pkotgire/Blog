@@ -48,6 +48,14 @@
         $this->runQuery($query);
       }
 
+      private function createFollowsTable() : void {
+        $query = "create table follows(u1guid char(32) not null, u2guid
+          char(32) not null, primary key(u1guid,u2guid), foreign key (u1guid)
+          references users (guid), foreign key (u2guid) references
+          users (guid));";
+
+        $this->runQuery($query);
+      }
 
       // Function to register a user into the 'users' databse
       // Returns a boolean based on success
@@ -133,6 +141,18 @@
         }
       }
 
+      public function getBlogs($username) : array {
+        $query = "";
+      }
+
+      /*public function getGUID($username, $email) : String {
+        $query = "SELECT guid FROM users WHERE username = '$username' OR email = '$email'";
+        $result = $this->runQuery($query);
+        $exists = $result->num_rows > 0;
+        $result->free();
+        return $exists;
+      }*/
+
       // Function to run a query, returns the result
       private function runQuery($query) {
         $conn = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
@@ -146,6 +166,11 @@
         $conn->close();
 
         return $result;
+      }
+
+      private function updateAvatar($guid, $bytes) : bool {
+        $query = "UPDATE users SET avatar = $bytes WHERE guid = '$guid'";
+        return $this->runQuery($query);
       }
 
       private function generate_guid() : String {
