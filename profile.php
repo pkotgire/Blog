@@ -30,17 +30,16 @@
     $firstname = trim($_POST["firstname"]);
     $lastname = trim($_POST["lastname"]);
     $website = trim($_POST["website"]);
-    $avatar = mysql_real_escape_string($_FILES["avatar"]["name"]);
-    $avatarData = mysql_real_escape_string($_FILES["avatar"]["tmp_name"]);
-    $imageType = mysql_real_escape_string($_FILES["avatar"]["type"]);
-    if(substr($imageType, 0, 5) != "image") {
-      phpAlert("Only images allowed");
-    } else {
-      $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname,
-                    "website"=>$website, "avatar"=>$avatarData);
-      // update user info in database
-      $db->updateUserInfo($guid, $updatedUser);
-    }
+
+    $avatar = ($_FILES["avatar"]["name"]);
+    $avatarData = ($_FILES["avatar"]["tmp_name"]);
+    $imageType = ($_FILES["avatar"]["type"]);
+
+    $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname,
+                  "website"=>$website, "avatar"=>$avatarData);
+    // update user info in database
+    $db->updateUserInfo($guid, $updatedUser);
+
   }
   // fetch user info from database
   $user = $db->getUserInfo($username);
@@ -48,7 +47,7 @@
   $fname = $user["firstName"];
   $lname = $user["lastName"];
   $website = $user["website"];
-  $avatar = $user['avatar'];
+  $avatar = $user["avatar"];
 
   // get following users from database
   // $followingUsers = $user["following"];
@@ -58,23 +57,23 @@
   if (isset($_POST["edit"])){
     $body = <<<FORM
     <div class="container center-align">
-      <form action="{$_SERVER['PHP_SELF']}" method="post">
+      <form action="{$_SERVER['PHP_SELF']}" method="post" enctype="multipart/form-data">
         <!-- Username -->
         <div class="form-group row">
           <label for="username" class="col-form-label col-sm-3"><strong>Username: </strong></label>
           <input type="text" class="form-control col-sm-8" id="username" name="username" pattern="[^\s]+" value="$username" disabled>
         </div>
 
-        <!-- Avatar -->
-        <div class="form-group row">
-          <label for="avatar" class="col-form-label col-sm-3"><strong>Avatar: </strong></label>
-          <input type="file" class="form-control col-sm-8" id="avatar" name="avatar" value="$avatar">
-        </div>
-
         <!-- Email -->
         <div class="form-group row">
           <label for="email" class="col-form-label col-sm-3"><strong>Email: </strong></label>
           <input type="email" class="form-control col-sm-8" id="email" name="email" value="$email" disabled>
+        </div>
+
+        <!-- Avatar -->
+        <div class="form-group row">
+          <label for="avatar" class="col-form-label col-sm-3"><strong>Avatar: </strong></label>
+          <input type="file" class="form-control col-sm-8" id="avatar" name="avatar" value="$avatar">
         </div>
 
         <!-- Firstname -->

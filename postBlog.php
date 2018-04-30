@@ -8,6 +8,8 @@
     header("Location: login.php");
   }
   $username = $_SESSION['username'];
+  $guid = $_SESSION['guid'];
+  $db = new DBConnection();
 
   // if the user posts a new blog
   if (isset($_POST['postBlog'])) {
@@ -15,6 +17,7 @@
     $blog = $_POST['newBlog'];
     $tags = processTags(trim($_POST['tags']));
     $time = date("h:iA m/d/Y");
+    $db->createBlog($guid, $blog, $tags);
 
     /* replace with database connection */
     // add the new blog to the list of other blogs
