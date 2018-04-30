@@ -30,10 +30,17 @@
     $firstname = trim($_POST["firstname"]);
     $lastname = trim($_POST["lastname"]);
     $website = trim($_POST["website"]);
-    $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname, "website"=>$website);
-
-    // update user info in database
-    $db->updateUserInfo($guid, $updatedUser);
+    $avatar = mysql_real_escape_string($_FILES["avatar"]["name"]);
+    $avatarData = mysql_real_escape_string($_FILES["avatar"]["tmp_name"]);
+    $imageType = mysql_real_escape_string($_FILES["avatar"]["type"]);
+    if(substr($imageType, 0, 5) != "image") {
+      phpAlert("Only images allowed");
+    } else {
+      $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname,
+                    "website"=>$website, "avatar"=>$avatarData);
+      // update user info in database
+      $db->updateUserInfo($guid, $updatedUser);
+    }
   }
   // fetch user info from database
   $user = $db->getUserInfo($username);
@@ -41,12 +48,13 @@
   $fname = $user["firstName"];
   $lname = $user["lastName"];
   $website = $user["website"];
+  $avatar = $user['avatar'];
 
   // get following users from database
   // $followingUsers = $user["following"];
   $followingUsers = implode(", ",['<a href="index.php">tom</a>', 'bill', 'ted','tom']);
 
-  // create form for user to upadte info
+  // create form for user to update info
   if (isset($_POST["edit"])){
     $body = <<<FORM
     <div class="container center-align">
@@ -59,7 +67,8 @@
 
         <!-- Avatar -->
         <div class="form-group row">
-          <!-- ADD PROFILE PIC STUFF HERE -->
+          <label for="avatar" class="col-form-label col-sm-3"><strong>Avatar: </strong></label>
+          <input type="file" class="form-control col-sm-8" id="avatar" name="avatar" value="$avatar">
         </div>
 
         <!-- Email -->
@@ -116,12 +125,12 @@ FORM;
       <div class="container center-align">
         <table class="table table-hover">
           <tbody>
-            <tr><td><strong>Username: </strong></td><td>$username</td></tr>
-            <!-- ADD PROFILE PIC STUFF HERE -->
-            <tr><td><strong>Email: </strong></td><td>$email</td></tr>
-            <tr><td><strong>Name: </strong></td><td>$fname $lname</td></tr>
-            <tr><td><strong>Website: </strong></td><td>$website</td></tr>
-            <tr><td><strong>Following: </strong></td><td>$followingUsers</td></tr>
+            <tr><td><strong>Username: </strong></td><td>{$username}</td></tr>
+            <tr><td><strong>Avatar: </strong></td><td><img src="data:image/jpeg;base64,{$avatar}"/></td></tr>
+            <tr><td><strong>Email: </strong></td><td>{$email}</td></tr>
+            <tr><td><strong>Name: </strong></td><td>{$fname} {$lname}</td></tr>
+            <tr><td><strong>Website: </strong></td><td>{$website}</td></tr>
+            <tr><td><strong>Following: </strong></td><td>{$followingUsers}</td></tr>
           </tbody>
         </table>
         <div class="float-right style="padding-right:7em;">
