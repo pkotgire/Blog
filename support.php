@@ -23,7 +23,7 @@ NAV;
       if ($currentPage == "home") {
         $navbar .= <<< NAV
           <form class="form-inline" action={$_SERVER['PHP_SELF']} method="get">
-            <input class="form-control mr-sm-2" type="search" placeholder="blogs" name="search">
+            <input class="form-control mr-sm-2" type="search" placeholder="blogs" name="q">
             <button class="btn btn-outline-light" type="submit">Search</button>
           </form>
 NAV;
@@ -84,8 +84,6 @@ NAV;
              <a href="index.php"> $title.com </a>
           </div>
         </footer>
-
-
       </body>
     </html>
 EOPAGE;

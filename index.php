@@ -14,8 +14,8 @@
   $name = $user["firstname"]." ".$user["lastname"];
   if($name == " ") { $name = $username; }
 
-  /* replace with database access to blogs */
   // add all blogs to a list for display
+  /* replace with database access to blogs */
   $blogsList = $_SESSION['blog'];
   $allBlogs = "";
   if(!empty($blogsList)) {
@@ -23,16 +23,23 @@
       $allBlogs .= $blog;
     }
   }
-  $search = $_GET['search'];
+  if ($allBlogs == "") {
+    $allBlogs = "<div class=\"alert alert-warning\">
+                   Looks like there's nothing here....
+                   Try searching for some tags or blogs to follow
+                   or post your own blog.
+                 </div>";
+  }
 
   // display user homepage with blog posts
   $body = <<<EOBODY
     <div class="container center-align">
       <h3>Welcome to your Blog, &nbsp<em>$name</em></h3>
       <hr>
-      <h6><a href="profile.php">Update your Profile</a> or
-      <a href="postBlog.php">Post something New!</a></h6>
-      <p>$search</p>
+      <h6>
+        <a href="profile.php">Update your Profile</a> or
+        <a href="postBlog.php">Post Something New!</a>
+      </h6>
       <!-- display blogs -->
       $allBlogs
     </div>

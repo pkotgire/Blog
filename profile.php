@@ -10,6 +10,8 @@
   $db = new DBConnection();
   // get username
   $username = $_SESSION["username"];
+  $user = $db->getUserInfo($username);
+  $guid = $user['guid'];
 
   // if the user cancels their edit
   if(isset($_POST["cancel"])){
@@ -17,7 +19,6 @@
   }
   $firstname = "";
   $lastname = "";
-  $birthday = "";
   $website = "";
 
   // if user submits their edit
@@ -25,22 +26,20 @@
     // get updated user info
 		// $email = trim($_POST["email"]);
     // $username = trim($_POST["username"]);
+    // $password = $_POST["password"];
     $firstname = trim($_POST["firstname"]);
     $lastname = trim($_POST["lastname"]);
-    $birthday = trim($_POST["birthday"]);
     $website = trim($_POST["website"]);
-		// $password = $_POST["password"];
-    $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname, "birthday"=>$birthday, "website"=>$website);
+    $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname, "website"=>$website);
 
     // update user info in database
-    $db->updateUserInfo($username, $updatedUser);
+    $db->updateUserInfo($guid, $updatedUser);
   }
   // fetch user info from database
   $user = $db->getUserInfo($username);
   $email = $user["email"];
-  $fname = $user["firstname"];
-  $lname = $user["lastname"];
-  $bday = $user["birthday"];
+  $fname = $user["firstName"];
+  $lname = $user["lastName"];
   $website = $user["website"];
 
   // get following users from database
@@ -82,11 +81,6 @@
           <input type="text" class="form-control col-sm-8" id="lastname" name="lastname" value="$lname">
         </div>
 
-        <!-- Birthday -->
-        <div class="form-group row">
-          <label for="birthday" class="col-form-label col-sm-3"><strong>Birthday: </strong></label>
-          <input type="date" class="form-control col-sm-8" id="birthday" name="birthday" value="$bday" >
-        </div>
         <!-- Website -->
         <div class="form-group row">
           <label for="website" class="col-form-label col-sm-3"><strong>Website: </strong></label>
@@ -128,19 +122,16 @@ FORM;
             <!-- ADD PROFILE PIC STUFF HERE -->
             <tr><td><strong>Email: </strong></td><td>$email</td></tr>
             <tr><td><strong>Name: </strong></td><td>$fname $lname</td></tr>
-            <tr><td><strong>Birthday: </strong></td><td>$bday</td></tr>
             <tr><td><strong>Website: </strong></td><td>$website</td></tr>
             <tr><td><strong>Following: </strong></td><td>$followingUsers</td></tr>
-
           </tbody>
         </table>
         <div class="float-right style="padding-right:7em;">
           <form action="{$_SERVER['PHP_SELF']}" method="post">
-            <a class="btn btn-primary" href="index.php">Go Back</a>
             <button class="btn btn-primary align-center" type="submit" name="edit">Edit Profile</button>
           </form>
         </div>
-      </div>
+        <br>
 EOBODY;
       // replace with database info
       $blogsList = $_SESSION['blog'];
@@ -150,11 +141,15 @@ EOBODY;
           $allBlogs .= $blog;
         }
       }
+      if ($allBlogs == "") {
+        $allBlogs = "<div class=\"alert alert-warning\">
+                       Looks like there's nothing here....
+                     </div>";
+      }
       $body .= <<< EOBODY
-      <div class="container center-align">
         <h3>Posts</h3>
-        $allBlogs
-      </div>
+          $allBlogs
+        </div>
 EOBODY;
   }
 
