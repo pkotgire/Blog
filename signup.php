@@ -43,6 +43,7 @@
 				// if succesful registration
 				// store username in SESSION
 				$_SESSION["username"] = $username;
+				$_SESSION["guid"] = $db->getUserInfo($username)['guid'];
 				$_SESSION["loggedin"] = TRUE;
 
 				// redirect user to home page

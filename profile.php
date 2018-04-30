@@ -30,10 +30,16 @@
     $firstname = trim($_POST["firstname"]);
     $lastname = trim($_POST["lastname"]);
     $website = trim($_POST["website"]);
-    $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname, "website"=>$website);
 
+    $avatar = ($_FILES["avatar"]["name"]);
+    $avatarData = ($_FILES["avatar"]["tmp_name"]);
+    $imageType = ($_FILES["avatar"]["type"]);
+
+    $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname,
+                  "website"=>$website, "avatar"=>$avatarData);
     // update user info in database
     $db->updateUserInfo($guid, $updatedUser);
+
   }
   // fetch user info from database
   $user = $db->getUserInfo($username);
@@ -41,31 +47,33 @@
   $fname = $user["firstName"];
   $lname = $user["lastName"];
   $website = $user["website"];
+  $avatar = $user["avatar"];
 
   // get following users from database
   // $followingUsers = $user["following"];
   $followingUsers = implode(", ",['<a href="index.php">tom</a>', 'bill', 'ted','tom']);
 
-  // create form for user to upadte info
+  // create form for user to update info
   if (isset($_POST["edit"])){
     $body = <<<FORM
     <div class="container center-align">
-      <form action="{$_SERVER['PHP_SELF']}" method="post">
+      <form action="{$_SERVER['PHP_SELF']}" method="post" enctype="multipart/form-data">
         <!-- Username -->
         <div class="form-group row">
           <label for="username" class="col-form-label col-sm-3"><strong>Username: </strong></label>
           <input type="text" class="form-control col-sm-8" id="username" name="username" pattern="[^\s]+" value="$username" disabled>
         </div>
 
-        <!-- Avatar -->
-        <div class="form-group row">
-          <!-- ADD PROFILE PIC STUFF HERE -->
-        </div>
-
         <!-- Email -->
         <div class="form-group row">
           <label for="email" class="col-form-label col-sm-3"><strong>Email: </strong></label>
           <input type="email" class="form-control col-sm-8" id="email" name="email" value="$email" disabled>
+        </div>
+
+        <!-- Avatar -->
+        <div class="form-group row">
+          <label for="avatar" class="col-form-label col-sm-3"><strong>Avatar: </strong></label>
+          <input type="file" class="form-control col-sm-8" id="avatar" name="avatar" value="$avatar">
         </div>
 
         <!-- Firstname -->
@@ -116,12 +124,12 @@ FORM;
       <div class="container center-align">
         <table class="table table-hover">
           <tbody>
-            <tr><td><strong>Username: </strong></td><td>$username</td></tr>
-            <!-- ADD PROFILE PIC STUFF HERE -->
-            <tr><td><strong>Email: </strong></td><td>$email</td></tr>
-            <tr><td><strong>Name: </strong></td><td>$fname $lname</td></tr>
-            <tr><td><strong>Website: </strong></td><td>$website</td></tr>
-            <tr><td><strong>Following: </strong></td><td>$followingUsers</td></tr>
+            <tr><td><strong>Username: </strong></td><td>{$username}</td></tr>
+            <tr><td><strong>Avatar: </strong></td><td><img src="data:image/jpeg;base64,{$avatar}"/></td></tr>
+            <tr><td><strong>Email: </strong></td><td>{$email}</td></tr>
+            <tr><td><strong>Name: </strong></td><td>{$fname} {$lname}</td></tr>
+            <tr><td><strong>Website: </strong></td><td>{$website}</td></tr>
+            <tr><td><strong>Following: </strong></td><td>{$followingUsers}</td></tr>
           </tbody>
         </table>
         <div class="float-right style="padding-right:7em;">

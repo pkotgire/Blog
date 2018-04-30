@@ -16,6 +16,7 @@
 				</div>";
 		} else {
 			$_SESSION["username"] = $username;
+			$_SESSION["guid"] = $db->getUserInfo($username)['guid'];
 			$_SESSION["loggedin"] = TRUE;
 			header("Location: index.php");
 	 	}
