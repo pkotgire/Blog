@@ -7,3 +7,5 @@ create table userHasBlogs(bguid char(32) primary key not null, uguid char(32) no
 create table blogs(guid char(32) primary key not null, text varchar(1024), timestamp datetime);
 
 create table tags(name varchar(32) not null, bguid char(32) not null, primary key(name,bguid), foreign key (bguid) references blogs (guid));
+
+create table follows(u1guid char(32) not null, u2guid char(32) not null, primary key(u1guid,u2guid), foreign key (u1guid) references users (guid), foreign key (u2guid) references users (guid));
