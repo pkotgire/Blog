@@ -9,6 +9,10 @@
   // connect to the database
   $db = new DBConnection();
   // get username
+  if (isset($_POST['follow'])){
+    // print_r($_SESSION["username"]." ".$_POST['follower']);
+    $db->updateFollowers($_SESSION["username"], $_POST['follower']);
+  }
   $currentuser = $_SESSION["username"];
   $profile = (empty($_SESSION['viewProfile'])) ? $currentuser: $_SESSION['viewProfile'];
   $_SESSION['viewProfile'] = $currentuser;
@@ -23,9 +27,6 @@
   $lastname = "";
   $website = "";
 
-  if (isset($_POST['follow'])){
-    $db->updateFollowers($currentuser, $profile);
-  }
   // if user submits their edit
   if(isset($_POST["update"])){
     // get updated user info
@@ -50,7 +51,14 @@
   $avatar = $user["avatar"];
 
   // get following users from database
-  $followingUsers = implode(", ", $db->getFollowers($user['guid']));
+  // print_r($user['guid']);
+  // print_r($db->getFollowers($user['guid']));
+  $followers = $db->getFollowers($user['guid'])[0];
+  if (!empty($followers)) {
+    $followingUsers .= implode(", ", $db->getFollowers($user['guid'])[0]);
+  } else {
+    $followingUsers = "";
+  }
 
   // create form for user to update info
   if (isset($_POST["edit"])){
@@ -89,7 +97,7 @@
         <!-- Website -->
         <div class="form-group row">
           <label for="website" class="col-form-label col-sm-3"><strong>Website: </strong></label>
-          <input type="url" class="form-control col-sm-8" id="website" name="website" value="$website">
+          <input type="text" class="form-control col-sm-8" id="website" name="website" value="$website">
         </div>
 
         <br>
@@ -128,7 +136,7 @@ FORM;
             <tr><td><strong>Name: </strong></td><td>{$fname} {$lname}</td></tr>
             <tr><td><strong>Avatar: </strong></td><td><img src="data:image/jpeg;base64,{$avatar}" alt="Avatar"/></td></tr>
             <tr><td><strong>Website: </strong></td><td>{$website}</td></tr>
-            <tr><td><strong>Following: </strong></td><td>{$followingUsers}</td></tr>
+<!--            <tr><td><strong>Following: </strong></td><td>{$followingUsers}</td></tr> -->
           </tbody>
         </table>
 EOBODY;
@@ -145,6 +153,7 @@ EOBODY;
       $body .= <<<EOBODY
         <div class="float-right style="padding-right:7em;">
           <form action="{$_SERVER['PHP_SELF']}" method="post">
+            <input type="hidden" name="follower" value="{$profile}">
             <button class="btn btn-primary align-center" type="submit" name="follow">Follow</button>
           </form>
         </div>
