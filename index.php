@@ -16,11 +16,13 @@
 
   // add all blogs to a list for display
   /* replace with database access to blogs */
-  $blogsList = $_SESSION['blog'];
+  // $blogsList = $_SESSION['blog'];
+  $blogsList = $db->getBlogs($username);
   $allBlogs = "";
   if(!empty($blogsList)) {
     foreach ($blogsList as $blog) {
-      $allBlogs .= $blog;
+      $tagList = processTags($blog['tags']);
+      $allBlogs .= processBlog($blog['text'], $tagList, $blog['timestamp'], $username);
     }
   }
   if ($allBlogs == "") {
@@ -46,5 +48,6 @@
 EOBODY;
    $page = generatePage($body, "", "home");
    echo $page;
+
 
  ?>

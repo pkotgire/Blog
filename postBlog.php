@@ -13,18 +13,11 @@
 
   // if the user posts a new blog
   if (isset($_POST['postBlog'])) {
-    // get the blog data, tags, and current time
+    // get the blog data and tags
     $blog = $_POST['newBlog'];
-    $tags = processTags(trim($_POST['tags']));
-    $time = date("h:iA m/d/Y");
+    $tags = trim($_POST['tags']).", ";
+    // add new blog to database
     $db->createBlog($guid, $blog, $tags);
-
-    /* replace with database connection */
-    // add the new blog to the list of other blogs
-    $blogs = (empty($_SESSION['blog'])) ? [] : $_SESSION['blog'];
-    array_unshift($blogs, processBlog($blog,$tags,$time, $username));
-    $_SESSION['blog'] = $blogs;
-
     // go back to the homepage
     header("Location: index.php");
   }
@@ -52,25 +45,4 @@ EOBODY;
   $page = generatePage($body, "", "postBlog");
   echo $page;
 
-
-  function processTags($tags='') {
-    return array_unique(preg_split('/[,\s]+/', $tags));
-  }
-
-  function processBlog($blog, $tagList, $time, $username) {
-    $tags = "";
-    if (!empty($tagList)) {
-      foreach ($tagList as $tag) {
-        $tags .= "<span class=\"badge badge-pill badge-primary\">$tag</span> ";
-      }
-    }
-    $newBlog = "<div class=\"container center-align blog\">
-                  $blog
-                  <br>
-                  $tags
-                  <br>
-                  <small><em> Posted by: <strong>$username</strong> at $time</em></small>
-                </div>";
-    return $newBlog;
-  }
 ?>

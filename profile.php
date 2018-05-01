@@ -10,7 +10,8 @@
   $db = new DBConnection();
   // get username
   $username = $_SESSION["username"];
-  $user = $db->getUserInfo($username);
+  $profile = (empty($_SESSION['view-profile'])) ? $username: $_SESSION['view-profile'];
+  $user = $db->getUserInfo($profile);
   $guid = $user['guid'];
 
   // if the user cancels their edit
@@ -24,25 +25,31 @@
   // if user submits their edit
   if(isset($_POST["update"])){
     // get updated user info
-		// $email = trim($_POST["email"]);
-    // $username = trim($_POST["username"]);
-    // $password = $_POST["password"];
+		// $email = trim($_POST["email"]); // $username = trim($_POST["username"]); // $password = $_POST["password"];
     $firstname = trim($_POST["firstname"]);
     $lastname = trim($_POST["lastname"]);
     $website = trim($_POST["website"]);
 
-    $avatar = ($_FILES["avatar"]["name"]);
+    // $avatar = ($_FILES["avatar"]["name"]);
     $avatarData = ($_FILES["avatar"]["tmp_name"]);
-    $imageType = ($_FILES["avatar"]["type"]);
+    // $imageType = ($_FILES["avatar"]["type"]);
+    // $avatarReal = realpath($avatarData);
+    // $handle = fopen($avatarData, "rb");
+    // $contents = fread($handle, filesize($avatarData));
+    // fclose($handle);
+    // phpAlert($avatarData." ".$contents);
 
     $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname,
-                  "website"=>$website, "avatar"=>$avatarData);
+                  "website"=>$website);
+
+    $db->updateAvatar($guid, $avatarData);
     // update user info in database
     $db->updateUserInfo($guid, $updatedUser);
 
   }
   // fetch user info from database
-  $user = $db->getUserInfo($username);
+  $user = $db->getUserInfo($profile);
+  // print_r($user);
   $email = $user["email"];
   $fname = $user["firstName"];
   $lname = $user["lastName"];
@@ -70,12 +77,6 @@
           <input type="email" class="form-control col-sm-8" id="email" name="email" value="$email" disabled>
         </div>
 
-        <!-- Avatar -->
-        <div class="form-group row">
-          <label for="avatar" class="col-form-label col-sm-3"><strong>Avatar: </strong></label>
-          <input type="file" class="form-control col-sm-8" id="avatar" name="avatar" value="$avatar">
-        </div>
-
         <!-- Firstname -->
         <div class="form-group row">
           <label for="firstname" class="col-form-label col-sm-3"><strong>First Name: </strong></label>
@@ -85,6 +86,12 @@
         <div class="form-group row">
           <label for="lastname" class="col-form-label col-sm-3"><strong>Last Name: </strong></label>
           <input type="text" class="form-control col-sm-8" id="lastname" name="lastname" value="$lname">
+        </div>
+
+        <!-- Avatar -->
+        <div class="form-group row">
+          <label for="avatar" class="col-form-label col-sm-3"><strong>Avatar: </strong></label>
+          <input type="file" class="form-control col-sm-8" id="avatar" name="avatar" value="$avatar">
         </div>
 
         <!-- Website -->
@@ -125,13 +132,16 @@ FORM;
         <table class="table table-hover">
           <tbody>
             <tr><td><strong>Username: </strong></td><td>{$username}</td></tr>
-            <tr><td><strong>Avatar: </strong></td><td><img src="data:image/jpeg;base64,{$avatar}"/></td></tr>
             <tr><td><strong>Email: </strong></td><td>{$email}</td></tr>
             <tr><td><strong>Name: </strong></td><td>{$fname} {$lname}</td></tr>
+            <tr><td><strong>Avatar: </strong></td><td><img src="data:image/jpeg;base64,{$avatar}" alt="Avatar"/></td></tr>
             <tr><td><strong>Website: </strong></td><td>{$website}</td></tr>
             <tr><td><strong>Following: </strong></td><td>{$followingUsers}</td></tr>
           </tbody>
         </table>
+EOBODY;
+    if($username == $profile) {
+      $body .= <<<EOBODY
         <div class="float-right style="padding-right:7em;">
           <form action="{$_SERVER['PHP_SELF']}" method="post">
             <button class="btn btn-primary align-center" type="submit" name="edit">Edit Profile</button>
@@ -139,6 +149,7 @@ FORM;
         </div>
         <br>
 EOBODY;
+    }
       // replace with database info
       $blogsList = $_SESSION['blog'];
       $allBlogs = "";

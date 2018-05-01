@@ -90,6 +90,41 @@ EOPAGE;
   return $page;
 }
 
+function processTags($tags='') {
+  return array_unique(preg_split('/[,\s]+/', $tags));
+}
+
+function processBlog($blog, $tagList, $time, $username) {
+  $tags = "";
+  if (!empty($tagList)) {
+    foreach ($tagList as $tag) {
+      $tags .= "<span class=\"badge badge-pill badge-primary\">$tag</span> ";
+    }
+  }
+  $newBlog = "<div class=\"container center-align blog\">
+                $blog
+                <br>
+                $tags
+                <br>
+                <small><em> Posted by: <strong>$username</strong> at $time</em></small>
+              </div>";
+  return $newBlog;
+}
+
+function processTags($resultList) {
+  $return = "";
+  for($resultList as $result) {
+    $return .= "<div class=\"container center-align blog\">
+                  $blog
+                  <br>
+                  $tags
+                  <br>
+                  <small><em> Posted by: <strong>$username</strong> at $time</em></small>
+                </div>";
+  }
+  return $return;
+}
+
 function phpAlert($msg) {
     echo '<script type="text/javascript">alert("'.$msg.'")</script>';
 }

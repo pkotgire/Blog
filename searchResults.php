@@ -12,16 +12,18 @@
   $username = $_SESSION["username"];
   // $user = $db->getUserInfo($username);
   $searchTerm = trim($_GET['q']);
-  // $results = search($searchTerm);
-  $results = "";
+  $results = searchByUser($searchTerm);
+  // $results = "";
 
   /* replace with database access to blogs */
   // add all blogs to a list for display
-  if ($results == "") {
+  if (empty($results)) {
     $results = "
       <div class=\"alert alert-info\">
         Nothing matched your search... try something else.
       </div>";
+  } else {
+    $results = processSearch($results);
   }
 
   // display user homepage with blog posts
