@@ -143,6 +143,19 @@
         return $array;
       }
 
+      public function searchByTag($tag) : array {
+        $query = "SELECT * FROM blogs where tags like '%$tag, %';";
+        $result = $this->runQuery($query);
+        $array = [];
+        if ($result->num_rows > 0) {
+          while($row = $result->fetch_assoc()) {
+            array_push($array, $row);
+          }
+        }
+        $result->free();
+        return $array;
+      }
+
       // Function to store and retrieve image
       public function updateAvatar($guid, $img) : bool {
         $query = "UPDATE users SET avatar = " . '{addslashes(file_get_contents($img))}' . " WHERE guid = '$guid'";
