@@ -128,16 +128,16 @@
         // Generate blog guid and insert into blog table
         $bGUID = $this->generate_guid();
         $query = "INSERT INTO blogs (GUID, text) VALUES ('$bGUID', '$text');";
-        echo $query . "<br>";
         $this->runQuery($query);
 
         // Link the blog to the given user
-        $query = "INSERT INTO userhasblogs (bguid, uguid) VALUES ($bGUID, $GUID);";
+        $query = "INSERT INTO userhasblogs (bguid, uguid) VALUES ('$bGUID', '$GUID');";
+        echo $query . "<br>";
         $this->runQuery($query);
 
         // Link tags to blog
         foreach($tags as $tag) {
-          $query = "INSERT INTO tags (name, bguid) VALUES ($tag, $bGUID)";
+          $query = "INSERT INTO tags (name, bguid) VALUES ('$tag', '$bGUID')";
           $this->runQuery($query);
         }
       }
@@ -176,7 +176,7 @@
         }
 
         $result = $conn->query($query);
-        echo $conn->error;
+        // echo $conn->error . "<br>";
         $conn->close();
 
         return $result;
