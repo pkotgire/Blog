@@ -117,8 +117,8 @@
       }
 
       public function getBlogs($username) : array {
-        $guid = getGUID($username, "");
-        $query = "SELECT * FROM blogs WHERE uguid = '$guid'";
+        $guid = $this->getGUID($username, "");
+        $query = "SELECT * FROM blogs WHERE uguid = '$guid' order by timestamp desc;";
         $result = $this->runQuery($query);
         $array = [];
         if ($result->num_rows > 0) {
@@ -126,6 +126,20 @@
             array_push($array, $row);
           }
         }
+        $result->free();
+        return $array;
+      }
+
+      public function searchByUser($username) : array {
+        $query = "SELECT * FROM users where username like '%$username%';";
+        $result = $this->runQuery($query);
+        $array = [];
+        if ($result->num_rows > 0) {
+          while($row = $result->fetch_assoc()) {
+            array_push($array, $row);
+          }
+        }
+        $result->free();
         return $array;
       }
 
@@ -135,6 +149,15 @@
         return $this->runQuery($query);
       }
 
+      public function retrieveAvatar($guid) {
+        $sqlQuery = "select avatar from users where guid = '{$guid}'";
+        $result = $this->runQuery($sqlQuery);
+        if ($result) {
+            $recordArray = mysqli_fetch_assoc($result);
+            echo $recordArray['docData'];
+        }
+      }
+
       // Function to add followers
       public function updateFollowers($user1,$user2) : bool {
           $query = "INSERT INTO follows(u1guid,u2guid) VALUES ('$user1','$user2')";
@@ -142,12 +165,18 @@
       }
 
       public function getFollowers($guid) : array {
-        $query = "SELECT u2guid FROM follows WHERE u1guid='$guid'";
-        $result = $this->runQuery($query);
-        $array = ($result->num_rows > 0) ? $result->fetch_assoc() : [];
-        $result->free();
-        return $array;
-      }
+          $query = "SELECT u2guid FROM follows WHERE u1guid='$guid'";
+          $result = $this->runQuery($query);
+          $followers = [];
+          if ($result->num_rows > 0) {
+              while ($follower = $result->fetch_assoc()){
+                  array_push($followers,$follower);
+              }
+          }
+          $result->free();
+          return $followers;
+    }
+
 
       public function getGUID($username, $email) : String {
         $query = "SELECT guid FROM users WHERE username = '$username' OR email = '$email'";
