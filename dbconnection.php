@@ -182,9 +182,9 @@
 
       // Function to add followers
       public function updateFollowers($user1,$user2) : bool {
-          $guid1 = $this->getGUID($user1);
-          $guid2 = $this->getGUID($user2);
-          $query = "INSERT INTO follows(u1guid,u2guid) VALUES ('$guid1','$guid2')";
+          $guid1 = $this->getGUID($user1, "");
+          $guid2 = $this->getGUID($user2, "");
+          $query = "INSERT INTO follows(u1guid,u2guid) VALUES ('$guid1','$guid')";
           return $this->runQuery($query);
       }
 
