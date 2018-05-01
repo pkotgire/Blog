@@ -118,7 +118,15 @@
 
       public function getBlogs($username) : array {
         $guid = getGUID($username, "");
-        $query = "SELECT * FROM blogs WHERE";
+        $query = "SELECT * FROM blogs WHERE uguid = '$guid'";
+        $result = $this->runQuery($query);
+        $array = [];
+        if ($result->num_rows > 0) {
+          while($row = $result->fetch_assoc()) {
+            array_push($array, $row);
+          }
+        }
+        return $array;
       }
 
       // Function to store and retrieve image
