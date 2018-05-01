@@ -9,9 +9,8 @@
 
       public function __construct() {
         $this->createUsersTable();
-        $this->createUserHasBlogsTable();
         $this->createBlogsTable();
-        $this->createTagsTable();
+        $this->createFollowsTable();
       }
 
       // Creates the 'users' table in the blog db if it does not exist
@@ -24,26 +23,11 @@
         $this->runQuery($query);
       }
 
-      // Creates the 'userHasBlogs' table
-      private function createUserHasBlogsTable() : void {
-        $query = "create table userHasBlogs(bguid char(32) primary key not
-          null, uguid char(32) not null, foreign key (uguid) references users
-          (guid), foreign key (bguid) references blogs (guid));";
-
-        $this->runQuery($query);
-      }
-
       private function createBlogsTable() : void {
-        $query = "create table blogs(guid char(32) primary key not null, text
-          varchar(1024), timestamp datetime not null default now());";
-
-        $this->runQuery($query);
-      }
-
-      private function createTagsTable() : void {
-        $query = "create table tags(name varchar(32) not null, bguid char(32)
-          not null, primary key(name,bguid), foreign key (bguid) references
-          blogs (guid));";
+        $query = "create table blogs(guid char(32) primary key not null, uguid
+          char(32) not null, text varchar(1024), timestamp datetime not null
+          default now(), tags varchar(1024), foreign key (uguid) references
+          users (guid));";
 
         $this->runQuery($query);
       }
@@ -127,31 +111,21 @@
 
         // Generate blog guid and insert into blog table
         $bGUID = $this->generate_guid();
-        $query = "INSERT INTO blogs (GUID, text) VALUES ('$bGUID', '$text');";
+        $query = "INSERT INTO blogs (GUID, uguid, text, tags) VALUES ('$bGUID', '$GUID', '$text', '$tags');";
         $this->runQuery($query);
 
-        // Link the blog to the given user
-        $query = "INSERT INTO userhasblogs (bguid, uguid) VALUES ('$bGUID', '$GUID');";
-        $this->runQuery($query);
-
-        // Link tags to blog
-        foreach($tags as $tag) {
-          $query = "INSERT INTO tags (name, bguid) VALUES ('$tag', '$bGUID')";
-          $this->runQuery($query);
-        }
       }
 
       public function getBlogs($username) : array {
-        $query = "";
+        $guid = getGUID($username, "");
+        $query = "SELECT * FROM blogs WHERE";
       }
 
       // Function to store and retrieve image
       public function updateAvatar($guid, $img) : bool {
-        $query = "UPDATE users SET avatar = " . mysqli_real_escape_string(file_get_contents($img)) . " WHERE guid = '$guid'";
-
+        $query = "UPDATE users SET avatar = " . '{addslashes(file_get_contents($img))}' . " WHERE guid = '$guid'";
         return $this->runQuery($query);
       }
-
 
       // Function to add followers
       public function updateFollowers($user1,$user2) : bool {
@@ -159,13 +133,18 @@
           return $this->runQuery($query);
       }
 
-      /*public function getGUID($username, $email) : String {
+      public function getGUID($username, $email) : String {
         $query = "SELECT guid FROM users WHERE username = '$username' OR email = '$email'";
         $result = $this->runQuery($query);
-        $exists = $result->num_rows > 0;
+        if ($result->num_rows > 0) {
+          $guid = $result->fetch_assoc()['guid'];
+        } else {
+          $guid = "";
+        }
+
         $result->free();
-        return $exists;
-      }*/
+        return $guid;
+      }
 
       // Function to run a query, returns the result
       private function runQuery($query) {
