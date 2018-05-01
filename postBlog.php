@@ -14,8 +14,8 @@
   // if the user posts a new blog
   if (isset($_POST['postBlog'])) {
     // get the blog data and tags
-    $blog = $_POST['newBlog'];
-    $tags = trim($_POST['tags']).", ";
+    $blog = trim($_POST['newBlog']);
+    $tags = trim($_POST['tags']).",";
     // add new blog to database
     $db->createBlog($guid, $blog, $tags);
     // go back to the homepage

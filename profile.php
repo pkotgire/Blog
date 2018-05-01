@@ -9,16 +9,15 @@
   // connect to the database
   $db = new DBConnection();
   // get username
-  if (isset($_POST['follow'])){
-    // print_r($_SESSION["username"]." ".$_POST['follower']);
-    $db->updateFollowers($_SESSION["username"], $_POST['follower']);
-  }
-  $currentuser = $_SESSION["username"];
-  $profile = (empty($_SESSION['viewProfile'])) ? $currentuser: $_SESSION['viewProfile'];
-  $_SESSION['viewProfile'] = $currentuser;
+  $currentUser = $_SESSION["username"];
+  $profile = (empty($_SESSION['viewProfile'])) ? $currentUser: $_SESSION['viewProfile'];
+  $_SESSION['viewProfile'] = $currentUser;
   $user = $db->getUserInfo($profile);
   $guid = $user['guid'];
 
+  if (isset($_POST['follow'])){
+    $db->updateFollowers($_SESSION["username"], $_POST['follower']);
+  }
   // if the user cancels their edit
   if(isset($_POST["cancel"])){
     unset($_POST["edit"]);
@@ -33,29 +32,28 @@
     $firstname = trim($_POST["firstname"]);
     $lastname = trim($_POST["lastname"]);
     $website = trim($_POST["website"]);
-    $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname,
-                  "website"=>$website);
-
+    $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname, "website"=>$website);
     // update user info in database
     $db->updateUserInfo($guid, $updatedUser);
 
+    // $image = $_FILES['avatar']['name'];
+    $imagetmp = base64_encode(file_get_contents($_FILES['avatar']['tmp_name']));
+    $db->updateAvatar($guid, $imagetmp);
   }
+
   // fetch user info from database
   $user = $db->getUserInfo($profile);
-  // print_r($user);
   $username = $user["username"];
+  $guid = $user['guid'];
   $email = $user["email"];
   $fname = $user["firstName"];
   $lname = $user["lastName"];
   $website = $user["website"];
-  $avatar = $user["avatar"];
 
   // get following users from database
-  // print_r($user['guid']);
-  // print_r($db->getFollowers($user['guid']));
-  $followers = $db->getFollowers($user['guid'])[0];
+  $followers = $db->getFollowers($guid);
   if (!empty($followers)) {
-    $followingUsers .= implode(", ", $db->getFollowers($user['guid'])[0]);
+    $followingUsers .= implode(", ", $db->getFollowers($guid));
   } else {
     $followingUsers = "";
   }
@@ -91,7 +89,8 @@
         <!-- Avatar -->
         <div class="form-group row">
           <label for="avatar" class="col-form-label col-sm-3"><strong>Avatar: </strong></label>
-          <input type="file" class="form-control col-sm-8" id="avatar" name="avatar" value="$avatar">
+          <input type="file" accept="image/*" class="form-control col-sm-8" id="avatar" name="avatar">
+
         </div>
 
         <!-- Website -->
@@ -134,13 +133,14 @@ FORM;
             <tr><td><strong>Username: </strong></td><td>{$username}</td></tr>
             <tr><td><strong>Email: </strong></td><td>{$email}</td></tr>
             <tr><td><strong>Name: </strong></td><td>{$fname} {$lname}</td></tr>
-            <tr><td><strong>Avatar: </strong></td><td><img src="data:image/jpeg;base64,{$avatar}" alt="Avatar"/></td></tr>
+            <tr><td><strong>Avatar: </strong></td><td><img id="avatar" src="data:image/jpeg;base64,
+                      {$db->retrieveAvatar($guid)}" alt="Avatar"/></td></tr>
             <tr><td><strong>Website: </strong></td><td>{$website}</td></tr>
-<!--            <tr><td><strong>Following: </strong></td><td>{$followingUsers}</td></tr> -->
+            <tr><td><strong>Following: </strong></td><td>{$followingUsers}</td></tr>
           </tbody>
         </table>
 EOBODY;
-    if($currentuser == $profile) {
+    if($currentUser == $profile) {
       $body .= <<<EOBODY
         <div class="float-right style="padding-right:7em;">
           <form action="{$_SERVER['PHP_SELF']}" method="post">

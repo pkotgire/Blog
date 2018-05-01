@@ -21,7 +21,7 @@
         Nothing matched your search... try something else.
       </div>";
   } else {
-    $results = processProfileSearch($results);
+    $results = processProfileSearch($results, $db);
   }
   if (empty($results2)) {
     $blogsSearched  = "
@@ -55,4 +55,26 @@ EOBODY;
 
    $page = generatePage($body, "", "search");
    echo $page;
+
+
+   function processProfileSearch($resultList, $db) {
+     $return = "";
+     foreach ($resultList as $result) {
+       $return .= <<<EOBODY
+           <div class=" center-align profiles">
+             <img id="searchAvatar" src="data:image/jpeg;base64,
+             {$db->retrieveAvatar($result['guid'])}">
+             &nbsp
+             {$result['username']} |
+             <em>{$result['email']}</em>
+             <br><br>
+             <form action="processViewProfile.php" method="post">
+               <input type="hidden" name="username" value="{$result['username']}">
+               <button class="btn btn-secondary" type="submit" name="viewProfile">View Profile</button>
+             </form>
+           </div><hr>
+EOBODY;
+     }
+     return $return;
+   }
  ?>

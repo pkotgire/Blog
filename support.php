@@ -87,7 +87,7 @@ EOPAGE;
 }
 
 function processTags($tags='') {
-  return array_unique(preg_split('/[,\s]+/', $tags));
+  return array_unique(preg_split('/[,]+/', $tags));
 }
 
 function processBlog($blog, $tagList, $time, $username) {
@@ -107,24 +107,6 @@ function processBlog($blog, $tagList, $time, $username) {
   return $newBlog;
 }
 
-function processProfileSearch($resultList) {
-  $return = "";
-  foreach ($resultList as $result) {
-    $return .= <<<EOBODY
-        <div class=" center-align profiles">
-          <img src="{$result['avatar']}">
-          {$result['username']} |
-          {$result['email']}
-          <br><br>
-          <form action="processViewProfile.php" method="post">
-            <input type="hidden" name="username" value="{$result['username']}">
-            <button class="btn btn-secondary" type="submit" name="viewProfile">View Profile</button>
-          </form>
-        </div><hr>
-EOBODY;
-  }
-  return $return;
-}
 
 function phpAlert($msg) {
     echo '<script type="text/javascript">alert("'.$msg.'")</script>';
