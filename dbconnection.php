@@ -158,13 +158,22 @@
 
       // Function to store and retrieve image
       public function updateAvatar($guid, $img) : bool {
-        $query = "UPDATE users SET avatar = " . '{addslashes(file_get_contents($img))}' . " WHERE guid = '$guid'";
+        $imgtemp = addslashes(file_get_contents($img));
+        $query = "UPDATE users SET avatar = '$imgtemp' WHERE guid = '$guid'";
         return $this->runQuery($query);
       }
 
       public function retrieveAvatar($guid) {
         $sqlQuery = "select avatar from users where guid = '{$guid}'";
         $result = $this->runQuery($sqlQuery);
+
+          if($row=mysql_fetch_array($var))
+          {
+              $image_name=$row["imagename"];
+              $image_content=$row["imagecontent"];
+          }
+          echo $image;
+
         if ($result) {
             $recordArray = mysqli_fetch_assoc($result);
             echo $recordArray['docData'];
@@ -173,7 +182,9 @@
 
       // Function to add followers
       public function updateFollowers($user1,$user2) : bool {
-          $query = "INSERT INTO follows(u1guid,u2guid) VALUES ('$user1','$user2')";
+          $guid1 = $this->getGUID($user1);
+          $guid2 = $this->getGUID($user2);
+          $query = "INSERT INTO follows(u1guid,u2guid) VALUES ('$guid1','$guid2')";
           return $this->runQuery($query);
       }
 
