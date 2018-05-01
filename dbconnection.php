@@ -127,7 +127,8 @@
 
         // Generate blog guid and insert into blog table
         $bGUID = $this->generate_guid();
-        $query = "INSERT INTO blogs (GUID, text) VALUES ($bGUID, $text);";
+        $query = "INSERT INTO blogs (GUID, text) VALUES ('$bGUID', '$text');";
+        echo $query . "<br>";
         $this->runQuery($query);
 
         // Link the blog to the given user
@@ -143,6 +144,19 @@
 
       public function getBlogs($username) : array {
         $query = "";
+      }
+
+      // Function to store and retrieve image
+      public function updateAvatar($guid, $img) : bool {
+        $query = "UPDATE users SET avatar = " . addslashes(file_get_contents($img)) . " WHERE guid = '$guid'";
+
+        return $this->runQuery($query);
+      }
+
+      // Function to add followers
+      public function updateFollowers($user1,$user2) : bool {
+          $query = "INSERT INTO follows(u1guid,u2guid) VALUES ('$user1','$user2')";
+          return $this->runQuery($query);
       }
 
       /*public function getGUID($username, $email) : String {
@@ -162,15 +176,10 @@
         }
 
         $result = $conn->query($query);
-        // echo $conn->error
+        echo $conn->error;
         $conn->close();
 
         return $result;
-      }
-
-      public function updateAvatar($guid, $bytes) : bool {
-        $query = "UPDATE users SET avatar = $bytes WHERE guid = '$guid'";
-        return $this->runQuery($query);
       }
 
       private function generate_guid() : String {
