@@ -9,8 +9,9 @@
   // connect to the database
   $db = new DBConnection();
   // get username
-  $username = $_SESSION["username"];
-  $profile = (empty($_SESSION['view-profile'])) ? $username: $_SESSION['view-profile'];
+  $currentuser = $_SESSION["username"];
+  $profile = (empty($_SESSION['viewProfile'])) ? $currentuser: $_SESSION['viewProfile'];
+  $_SESSION['viewProfile'] = $currentuser;
   $user = $db->getUserInfo($profile);
   $guid = $user['guid'];
 
@@ -22,27 +23,18 @@
   $lastname = "";
   $website = "";
 
+  if (isset($_POST['follow'])){
+    $db->updateFollowers($currentuser, $profile);
+  }
   // if user submits their edit
   if(isset($_POST["update"])){
     // get updated user info
-		// $email = trim($_POST["email"]); // $username = trim($_POST["username"]); // $password = $_POST["password"];
     $firstname = trim($_POST["firstname"]);
     $lastname = trim($_POST["lastname"]);
     $website = trim($_POST["website"]);
-
-    // $avatar = ($_FILES["avatar"]["name"]);
-    $avatarData = ($_FILES["avatar"]["tmp_name"]);
-    // $imageType = ($_FILES["avatar"]["type"]);
-    // $avatarReal = realpath($avatarData);
-    // $handle = fopen($avatarData, "rb");
-    // $contents = fread($handle, filesize($avatarData));
-    // fclose($handle);
-    // phpAlert($avatarData." ".$contents);
-
     $updatedUser = array("firstname"=>$firstname, "lastname"=>$lastname,
                   "website"=>$website);
 
-    $db->updateAvatar($guid, $avatarData);
     // update user info in database
     $db->updateUserInfo($guid, $updatedUser);
 
@@ -50,6 +42,7 @@
   // fetch user info from database
   $user = $db->getUserInfo($profile);
   // print_r($user);
+  $username = $user["username"];
   $email = $user["email"];
   $fname = $user["firstName"];
   $lname = $user["lastName"];
@@ -57,8 +50,7 @@
   $avatar = $user["avatar"];
 
   // get following users from database
-  // $followingUsers = $user["following"];
-  $followingUsers = implode(", ",['<a href="index.php">tom</a>', 'bill', 'ted','tom']);
+  $followingUsers = implode(", ", $db->getFollowers($user['guid']));
 
   // create form for user to update info
   if (isset($_POST["edit"])){
@@ -140,7 +132,7 @@ FORM;
           </tbody>
         </table>
 EOBODY;
-    if($username == $profile) {
+    if($currentuser == $profile) {
       $body .= <<<EOBODY
         <div class="float-right style="padding-right:7em;">
           <form action="{$_SERVER['PHP_SELF']}" method="post">
@@ -149,13 +141,23 @@ EOBODY;
         </div>
         <br>
 EOBODY;
-    }
+    } else {
+      $body .= <<<EOBODY
+        <div class="float-right style="padding-right:7em;">
+          <form action="{$_SERVER['PHP_SELF']}" method="post">
+            <button class="btn btn-primary align-center" type="submit" name="follow">Follow</button>
+          </form>
+        </div>
+        <br>
+EOBODY;
+}
       // replace with database info
-      $blogsList = $_SESSION['blog'];
+      $blogsList = $db->getBlogs($username);
       $allBlogs = "";
       if(!empty($blogsList)) {
         foreach ($blogsList as $blog) {
-          $allBlogs .= $blog;
+          $tagList = processTags($blog['tags']);
+          $allBlogs .= processBlog($blog['text'], $tagList, $blog['timestamp'], $username);
         }
       }
       if ($allBlogs == "") {

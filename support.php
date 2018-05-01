@@ -19,16 +19,10 @@ function generatePage($body, $navbar="", $currentPage="") {
       $navbar = <<< NAV
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-fixed-top">
         <a class="navbar-brand" href="index.php">$title</a>
-NAV;
-      if ($currentPage == "home") {
-        $navbar .= <<< NAV
           <form class="form-inline" action="searchResults.php" method="get">
             <input class="form-control mr-sm-2" type="search" placeholder="blogs" name="q">
             <button class="btn btn-outline-light" type="submit">Search</button>
           </form>
-NAV;
-      }
-      $navbar .= <<< NAV
         <button class="navbar-toggler" type="button" data-toggle="collapse"
          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
          aria-expanded="false" aria-label="Toggle navigation">
@@ -111,16 +105,21 @@ function processBlog($blog, $tagList, $time, $username) {
   return $newBlog;
 }
 
-function processTags($resultList) {
+function processProfileSearch($resultList) {
   $return = "";
-  for($resultList as $result) {
-    $return .= "<div class=\"container center-align blog\">
-                  $blog
-                  <br>
-                  $tags
-                  <br>
-                  <small><em> Posted by: <strong>$username</strong> at $time</em></small>
-                </div>";
+  foreach ($resultList as $result) {
+    $return .= <<<EOBODY
+        <div class=" center-align profiles">
+          <img src="{$result['avatar']}">
+          {$result['username']} |
+          {$result['email']}
+          <br><br>
+          <form action="processViewProfile.php" method="post">
+            <input type="hidden" name="username" value="{$result['username']}">
+            <button class="btn btn-secondary" type="submit" name="viewProfile">View Profile</button>
+          </form>
+        </div><hr>
+EOBODY;
   }
   return $return;
 }
