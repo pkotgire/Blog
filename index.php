@@ -15,13 +15,16 @@
   if($name == " ") { $name = $username; }
 
   // add all blogs to a list for display
-  /* replace with database access to blogs */
-  // $blogsList = $_SESSION['blog'];
-  $blogsList = $db->getBlogs($username);
   $allBlogs = "";
+  $blogsList = $db->getBlogs($username);
+  $followers = $db->getFollowers($user['guid']);
+  foreach ($followers as $follower) {
+    $blogsList = array_merge($blogsList, $db->getBlogs($follower));
+  }
   if(!empty($blogsList)) {
     foreach ($blogsList as $blog) {
       $tagList = processTags($blog['tags']);
+      $username = $db->getUsername($blog['uguid']);
       $allBlogs .= processBlog($blog['text'], $tagList, $blog['timestamp'], $username);
     }
   }

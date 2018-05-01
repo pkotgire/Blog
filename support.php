@@ -20,7 +20,7 @@ function generatePage($body, $navbar="", $currentPage="") {
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary navbar-fixed-top">
         <a class="navbar-brand" href="index.php">$title</a>
           <form class="form-inline" action="searchResults.php" method="get">
-            <input class="form-control mr-sm-2" type="search" placeholder="blogs" name="q">
+            <input class="form-control mr-sm-2" type="search" placeholder="users, tags" name="q">
             <button class="btn btn-outline-light" type="submit">Search</button>
           </form>
         <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -87,7 +87,7 @@ EOPAGE;
 }
 
 function processTags($tags='') {
-  return array_unique(preg_split('/[,]+/', $tags));
+  return array_unique(preg_split('/[,\s]+/', $tags));
 }
 
 function processBlog($blog, $tagList, $time, $username) {
