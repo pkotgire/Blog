@@ -167,16 +167,9 @@
         $sqlQuery = "select avatar from users where guid = '{$guid}'";
         $result = $this->runQuery($sqlQuery);
 
-          if($row=mysql_fetch_array($var))
-          {
-              $image_name=$row["imagename"];
-              $image_content=$row["imagecontent"];
-          }
-          echo $image;
-
         if ($result) {
             $recordArray = mysqli_fetch_assoc($result);
-            echo $recordArray['docData'];
+            return $recordArray['avatar'];
         }
       }
 
@@ -184,7 +177,7 @@
       public function updateFollowers($user1,$user2) : bool {
           $guid1 = $this->getGUID($user1, "");
           $guid2 = $this->getGUID($user2, "");
-          $query = "INSERT INTO follows(u1guid,u2guid) VALUES ('$guid1','$guid')";
+          $query = "INSERT INTO follows(u1guid,u2guid) VALUES ('$guid1','$guid2')";
           return $this->runQuery($query);
       }
 
@@ -193,7 +186,8 @@
           $result = $this->runQuery($query);
           $followers = [];
           if ($result->num_rows > 0) {
-              while ($follower = $result->fetch_assoc()){
+              while ($id = $result->fetch_assoc()){
+
                   array_push($followers,$follower);
               }
           }
