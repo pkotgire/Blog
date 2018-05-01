@@ -133,6 +133,14 @@
           return $this->runQuery($query);
       }
 
+      public function getFollowers($guid) : array {
+        $query = "SELECT u2guid FROM follows WHERE u1guid='$guid'";
+        $result = $this->runQuery($query);
+        $array = ($result->num_rows > 0) ? $result->fetch_assoc() : [];
+        $result->free();
+        return $array;
+      }
+
       public function getGUID($username, $email) : String {
         $query = "SELECT guid FROM users WHERE username = '$username' OR email = '$email'";
         $result = $this->runQuery($query);
