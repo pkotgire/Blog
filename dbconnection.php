@@ -79,6 +79,17 @@
         $result->free();
         return $array;
       }
+      public function getUsername($guid) : String {
+        $query = "SELECT username FROM users WHERE guid = '$guid'";
+        $result = $this->runQuery($query);
+        if ($result->num_rows > 0) {
+          $username = $result->fetch_assoc()['username'];
+        } else {
+          $username = "";
+        }
+        $result->free();
+        return $username;
+      }
 
       // Function that takes a username and email and checks if the user exists, only one of the parameters
       // have to be passed in
@@ -194,7 +205,6 @@
           $result->free();
           return $followers;
     }
-
 
       public function getGUID($username, $email) : String {
         $query = "SELECT guid FROM users WHERE username = '$username' OR email = '$email'";

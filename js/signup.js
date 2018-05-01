@@ -1,25 +1,35 @@
-window.onsubmit = main;
+window.onsubmit = validateForm;
 
-function main() {
+function validateForm() {
   var pass = document.getElementById("password").value;
+  var verifypass = document.getElementById("verifypass").value;
   var user = document.getElementById("username").value;
   var email = document.getElementById("email").value;
-  var x = "";
 
-  if (pass.length == '' || pass.length <= 8) {
-    x += "Passowrd is too short\n";
-  } else if (pass.length > 255) {
-    x += "Password is too long\n";
+  var invalidMessage = "";
+  if (pass == '' || pass.length < 8) {
+    invalidMessage += "Passowrd is too short\n";
+  }
+  if (pass.length > 255) {
+    invalidMessage += "Password is too long\n";
+  }
+  if (verifypass != pass) {
+    invalidMessage += "Passwords don't match\n";
+  }
+  if (user.length < 3 ) {
+    invalidMessage += "Username is too short\n";
   }
   if (user.length > 16) {
-    x += "Username is too long\n";
+    invalidMessage += "Username is too long\n";
   }
-  if (email.length > 100) {
-    x += "Email is too long\n";
-  }
-
-  if (x === "") {
-    alert(x);
+  if (email.length > 128) {
+    invalidMessage += "Email is too long\n";
   }
 
+  if (invalidMessage == "") {
+    return true;
+  } else {
+    alert(invalidMessage);
+    return false;
+  }
 }

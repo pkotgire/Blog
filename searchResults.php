@@ -33,6 +33,7 @@
     if(!empty($results2)) {
       foreach ($results2 as $blog) {
         $tagList = processTags($blog['tags']);
+        $username = $db->getUsername($blog['uguid']);
         $blogsSearched .= processBlog($blog['text'], $tagList, $blog['timestamp'], $username);
       }
     }

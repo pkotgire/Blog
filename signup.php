@@ -101,6 +101,7 @@ FORM;
 				</small>
 	    </form>
 	  </div>
+		<script src="js/signup.js"></script>
 BUTTONS;
 $navbar = <<< NAV
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">

@@ -47,8 +47,9 @@ NAV;
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <!-- css -->
+        <!-- favicon -->
         <link rel="shortcut icon" type="image/png" href="img/wbfavicon2.png">
+        <!-- css -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/style.css">
@@ -58,8 +59,7 @@ NAV;
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
-        <script src="js/profile.js"></script>
-        <script src="js/signup.js"></script>
+
         <title>$title | CMSC389N</title>
       </head>
       <body>

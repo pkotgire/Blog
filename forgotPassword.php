@@ -2,9 +2,14 @@
   require_once("support.php");
 
   $body = <<< EOBODY
-  <div class="container center-align mx-auto" style="margin-top: 6em !important; text-align:center;">
-    <h1>HA! Get <strong>REKT</strong> BOII!!!!!!!</h1>
-    <h2>Shoulda remembered your password, <strong><em>dummy...</em></strong></h2>
+  <div class="container center-align mx-auto" style="margin-top: 6em !important;">
+    <h4><em>Be more careful next time...</em></h4>
+    <form action="{$_SERVER['PHP_SELF']}" method="post">
+      <label for="email">Enter email:</label>
+      <input type="email" name="email">
+      <button class="btn btn-primary" type="submit" name="button">Reset Password</button>
+    </form>
+
   </div>
 EOBODY;
 $navbar = <<< NAV
