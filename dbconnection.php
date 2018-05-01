@@ -132,7 +132,6 @@
 
         // Link the blog to the given user
         $query = "INSERT INTO userhasblogs (bguid, uguid) VALUES ('$bGUID', '$GUID');";
-        echo $query . "<br>";
         $this->runQuery($query);
 
         // Link tags to blog
@@ -148,10 +147,11 @@
 
       // Function to store and retrieve image
       public function updateAvatar($guid, $img) : bool {
-        $query = "UPDATE users SET avatar = " . addslashes(file_get_contents($img)) . " WHERE guid = '$guid'";
+        $query = "UPDATE users SET avatar = " . mysqli_real_escape_string(file_get_contents($img)) . " WHERE guid = '$guid'";
 
         return $this->runQuery($query);
       }
+
 
       // Function to add followers
       public function updateFollowers($user1,$user2) : bool {
