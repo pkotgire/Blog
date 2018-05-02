@@ -211,6 +211,23 @@
       return $followers;
     }
 
+    private function cmpTime($a, $b) {
+        return strnatcmp($b['timestamp'], $a['timestamp']);
+    }
+
+    public function getFeed($guid) : array {
+      $followers = $this->getFollowers($guid);
+      array_push($followers,$this->getUsername($guid));
+      $blogs = [];
+      foreach ($followers as $follower) {
+        foreach ($this->getBlogs($follower) as $post) {
+            array_push($blogs,$post);
+        }
+      }
+      usort($blogs, 'cmpTime');
+      return $blogs;
+    }
+
     public function getGUID($username, $email) : String {
       $query = "SELECT guid FROM users WHERE username = '$username' OR email = '$email'";
       $result = $this->runQuery($query);
