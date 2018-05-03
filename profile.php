@@ -17,15 +17,18 @@
 
   if (isset($_POST['follow'])){
     $db->updateFollowers($_SESSION["username"], $_POST['follower']);
+  } else if (isset($_POST['unfollow'])) {
+    $db->removeFollower($_SESSION["username"], $_POST['follower']);
   }
+
   // if the user cancels their edit
   if(isset($_POST["cancel"])){
     unset($_POST["edit"]);
   }
-  $firstname = "";
-  $lastname = "";
-  $website = "";
-
+  // $firstname = "";
+  // $lastname = "";
+  // $website = "";
+  //
   // if user submits their edit
   if(isset($_POST["update"])){
     // get updated user info
@@ -139,27 +142,19 @@ FORM;
             <tr><td><strong>Following: </strong></td><td>{$followingUsers}</td></tr>
           </tbody>
         </table>
+        <div class="float-right style="padding-right:7em;">
+          <form action="{$_SERVER['PHP_SELF']}" method="post">
 EOBODY;
     if($currentUser == $profile) {
-      $body .= <<<EOBODY
-        <div class="float-right style="padding-right:7em;">
-          <form action="{$_SERVER['PHP_SELF']}" method="post">
-            <button class="btn btn-primary align-center" type="submit" name="edit">Edit Profile</button>
-          </form>
-        </div>
-        <br>
-EOBODY;
+      $body .= "<button class=\"btn btn-primary align-center\" type=\"submit\" name=\"edit\">Edit Profile</button>";
     } else {
-      $body .= <<<EOBODY
-        <div class="float-right style="padding-right:7em;">
-          <form action="{$_SERVER['PHP_SELF']}" method="post">
-            <input type="hidden" name="follower" value="{$profile}">
-            <button class="btn btn-primary align-center" type="submit" name="follow">Follow</button>
-          </form>
-        </div>
-        <br>
-EOBODY;
-}
+      $body .= "<input type=\"hidden\" name=\"follower\" value=\"{$profile}\">";
+      if(!$db->isFollowing($currentUser, $profile))
+        $body .= "<button class=\"btn btn-primary align-center\" type=\"submit\" name=\"follow\">Follow</button>";
+      else
+        $body .= "<button class=\"btn btn-primary align-center\" type=\"submit\" name=\"unfollow\">Unfollow</button>";
+    }
+      $body .= "</form></div><br>";
       // replace with database info
       $blogsList = $db->getBlogs($username);
       $allBlogs = "";
