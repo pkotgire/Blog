@@ -40,8 +40,10 @@
     $db->updateUserInfo($guid, $updatedUser);
 
     // $image = $_FILES['avatar']['name'];
-    $imagetmp = base64_encode(file_get_contents($_FILES['avatar']['tmp_name']));
-    $db->updateAvatar($guid, $imagetmp);
+    if (!empty($_FILES['avatar']['tmp_name'])) {
+      $imagetmp = base64_encode(file_get_contents($_FILES['avatar']['tmp_name']));
+      $db->updateAvatar($guid, $imagetmp);
+    }
   }
 
   // fetch user info from database
