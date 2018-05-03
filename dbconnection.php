@@ -240,7 +240,7 @@
       $followers = [];
       if ($result->num_rows > 0) {
         while ($id = $result->fetch_assoc()){
-          $follower = $this->getUsername($id['u2guid']);
+          $follower = $this->getUsername($id['u1guid']);
           array_push($followers, $follower);
         }
       }

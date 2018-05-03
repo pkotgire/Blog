@@ -56,11 +56,18 @@
   $website = $user["website"];
 
   // get following users from database
-  $followers = $db->getFollowers($guid);
-  if (!empty($followers)) {
-    $followingUsers .= implode(", ", $db->getFollowers($guid));
+  $following = $db->getFollowers($guid);
+  if (!empty($following)) {
+    $followingUsers .= implode(", ", $following);
   } else {
     $followingUsers = "";
+  }
+  // get followers from database
+  $followers = $db->getFollowersOf($guid);
+  if (!empty($followers)) {
+    $followersUser .= implode(", ", $followers);
+  } else {
+    $followersUser = "";
   }
 
   // create form for user to update info
@@ -143,6 +150,8 @@ FORM;
             <tr><td><strong>Website: </strong></td><td>{$website}</td></tr>
             <tr><td><strong>Following: </strong></td>
                       <td><strong><em>{$followingUsers}</em></strong></td></tr>
+            <tr><td><strong>Followers: </strong></td>
+                      <td><strong><em>{$followersUser}</em></strong></td></tr>
           </tbody>
         </table>
         <div class="float-right style="padding-right:7em;">
