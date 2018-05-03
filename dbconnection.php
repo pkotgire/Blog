@@ -155,7 +155,7 @@
     }
 
     public function searchByTag($tag) : array {
-      $query = "SELECT * FROM blogs where tags like '%$tag, %';";
+      $query = "SELECT * FROM blogs where tags like '%$tag,%';";
       $result = $this->runQuery($query);
       $array = [];
       if ($result->num_rows > 0) {
@@ -195,6 +195,26 @@
       $guid2 = $this->getGUID($user2, "");
       $query = "INSERT INTO follows (u1guid,u2guid) VALUES ('$guid1','$guid2')";
       return $this->runQuery($query);
+    }
+
+    // Returns true if user1 is following user2
+    public function isFollowing($user1, $user2) : bool {
+      $guid1 = $this->getGUID($user1, "");
+      $guid2 = $this->getGUID($user2, "");
+
+      $query = "SELECT * FROM follows WHERE u1guid = '$guid1' and u2guid = '$guid2';";
+      $result = $this->runQuery($query);
+
+      return $result->num_rows > 0;
+    }
+
+    // Function to remove a followers
+    public function removeFollower($user1, $user2) {
+      $guid1 = $this->getGUID($user1, "");
+      $guid2 = $this->getGUID($user2, "");
+
+      $query = "DELETE FROM follows WHERE u1guid = '$guid1' and u2guid = '$guid2';";
+      $this->runQuery($query);
     }
 
     public function getFollowers($guid) : array {
