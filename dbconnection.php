@@ -48,9 +48,12 @@
       if ($this->userExists($username, $email)) {
         return FALSE;
       }
+
       $query = "INSERT INTO users (GUID, username, email, password)
         VALUES ('$GUID', '$username', '$email', '$password')";
-      return $this->runQuery($query);
+      $ret = $this->runQuery($query);
+      $this->updateAvatar($GUID, addslashes(file_get_contents('default-avatar.bin')));
+      return ret;
     }
 
     // Function to check if login is valid
