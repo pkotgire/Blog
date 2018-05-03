@@ -231,7 +231,7 @@
       return $followers;
     }
 
-    private function cmpTime($a, $b) {
+    private static function cmpTime($a, $b) {
         return strnatcmp($b['timestamp'], $a['timestamp']);
     }
 
