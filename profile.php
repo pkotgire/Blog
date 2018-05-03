@@ -139,7 +139,8 @@ FORM;
             <tr><td><strong>Avatar: </strong></td><td><img id="avatar" src="data:image/jpeg;base64,
                       {$db->retrieveAvatar($guid)}" alt="Avatar"/></td></tr>
             <tr><td><strong>Website: </strong></td><td>{$website}</td></tr>
-            <tr><td><strong>Following: </strong></td><td>{$followingUsers}</td></tr>
+            <tr><td><strong>Following: </strong></td>
+                      <td><strong><em>{$followingUsers}</em></strong></td></tr>
           </tbody>
         </table>
         <div class="float-right style="padding-right:7em;">

@@ -16,11 +16,8 @@
 
   // add all blogs to a list for display
   $allBlogs = "";
-  $blogsList = $db->getBlogs($username);
-  $followers = $db->getFollowers($user['guid']);
-  foreach ($followers as $follower) {
-    $blogsList = array_merge($blogsList, $db->getBlogs($follower));
-  }
+  $blogsList = $db->getFeed($user['guid']);
+
   if(!empty($blogsList)) {
     foreach ($blogsList as $blog) {
       $tagList = processTags($blog['tags']);
