@@ -247,7 +247,7 @@
             array_push($blogs,$post);
         }
       }
-      usort($blogs, 'cmpTime');
+      usort($blogs, array("DBConnection", "cmpTime"));
       return $blogs;
     }
 
