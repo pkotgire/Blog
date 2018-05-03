@@ -234,6 +234,20 @@
       return $followers;
     }
 
+    public function getFollowersOf($guid) : array {
+      $query = "SELECT u1guid FROM follows WHERE u2guid='$guid'";
+      $result = $this->runQuery($query);
+      $followers = [];
+      if ($result->num_rows > 0) {
+        while ($id = $result->fetch_assoc()){
+          $follower = $this->getUsername($id['u2guid']);
+          array_push($followers, $follower);
+        }
+      }
+      $result->free();
+      return $followers;
+    }
+
     private static function cmpTime($a, $b) {
         return strnatcmp($b['timestamp'], $a['timestamp']);
     }
